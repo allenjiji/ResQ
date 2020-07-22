@@ -16,5 +16,6 @@ router.register('userpost',views.UserPostViewSet)
 
 urlpatterns = [
     path('',include(router.urls)),
-    path('login/',obtain_auth_token)
+    path('login/',obtain_auth_token),
+    path('upvote/<int:pk>',views.Upvote.as_view())
 ]

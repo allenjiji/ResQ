@@ -42,14 +42,19 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
 class UserPostManager(models.Manager):
     def create(self,*args, **kwargs):
         if all(x in kwargs.keys() for x in['userprofile','lat','lon','content','heading']):
-            return super(UserPostManager,self).create(*args, **kwargs)
+            userp=self.model(**kwargs)
+            userp.save(using=self._db)
+            # userp.upvotes.set([])
+            # userp.save()
+            return userp
+            #return super(UserPostManager,self).create(*args, **kwargs)
         else:
             return ValueError('Some values are mandatory')
         
 
 class UserPost(models.Model):
     userprofile=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
-    upvotes=models.IntegerField(default=0)
+    upvotes=models.ManyToManyField(UserProfile,related_name='luserprofile',blank=True)
     lat=models.DecimalField(max_digits=9,decimal_places=6)
     lon=models.DecimalField(max_digits=9,decimal_places=6)
     heading=models.TextField(max_length=100)

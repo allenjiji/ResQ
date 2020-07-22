@@ -34,10 +34,9 @@ class UserPostSerializer(serializers.ModelSerializer):
     class Meta:
         model =UserPost
         fields='__all__'
+        #exclude=('upvotes',)
         extra_kwargs={
             'userprofile':{
                 'read_only':True
             }
         }
-
-    
