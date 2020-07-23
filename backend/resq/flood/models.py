@@ -12,6 +12,16 @@ class UserProfileManager(BaseUserManager):
             return user
         else:
             return ValueError('Some values are mandatory')
+
+    def create_superuser(self,phone,lat,lon,is_volunteer,password):
+        #print([phone,lat,lon,is_volunteer,password])
+        user=self.create_user(phone=phone,lat=lat,lon=lon,is_volunteer= is_volunteer,password= password)
+        user.is_superuser=True
+        user.is_staff=True
+        print(user)
+        user.save(using=self._db)
+
+        return user
         
 
 
@@ -48,7 +58,7 @@ class UserPostManager(models.Manager):
             #return super(UserPostManager,self).create(*args, **kwargs)
         else:
             return ValueError('Some values are mandatory')
-        
+
 
 class UserPost(models.Model):
     userprofile=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
