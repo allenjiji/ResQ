@@ -7,6 +7,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from flood.pagination import UserProfilePagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from math import sin, cos, sqrt, atan2, radians
+from decimal import Decimal
 
 
 class UserProfileViewSet(ModelViewSet):
@@ -24,10 +26,27 @@ class UserPostViewSet(ModelViewSet):
     def perform_create(self, serializer):
         #serializer.save(upvotes=[self.request.user])
         return serializer.save(userprofile=self.request.user)
-    
-    # def create(self, *args, **kwargs):
-    #     return UserPost.objects.create(upvotes=[self.request.user],userprofile=self.request.user,**kwargs)
 
+    def get_queryset(self):
+        queryset=UserPost.objects.all()
+        lat=self.request.query_params.get('lat',None)
+        lon=self.request.query_params.get('lon',None)
+        if lat is not None and lon is not None:
+            return [x for x in queryset if self.get_near(Decimal(lat),Decimal(lon),x.lat,x.lon)]
+        else:
+            return queryset
+
+    def get_near(self,lat1,lon1,lat2,lon2):
+        R = 6373.0
+
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
+
+        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        return (R * c)<=60
+        
 
     
 class Upvote(APIView):
