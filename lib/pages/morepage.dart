@@ -69,6 +69,7 @@ class _MoreState extends State<More> {
             onTap: () {
               print("tapped the $index th block");
               if (index == 0) {
+                _selectedValue=null;
                 showModalBottomSheet(
                     context: context,
                     builder: (_) {
@@ -117,6 +118,8 @@ class _MoreState extends State<More> {
                                   setState(() {
                                     _selectedValue = "$value";
                                   });
+                                },
+                                onTap: () {
                                   setState(() {
                                     
                                   });
