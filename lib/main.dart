@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './pages/homepage.dart';
+import './pages/weathermap.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,7 +22,11 @@ class MyApp extends StatelessWidget {
           bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
       ),
-      home: MyHomePage(),
+      //home: MyHomePage(),
+      routes: {
+        '/': (context) => MyHomePage(),
+        WeatherMap.routeName: (context) => WeatherMap(),
+      },
     );
   }
 }
