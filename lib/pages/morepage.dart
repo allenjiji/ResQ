@@ -1,6 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
 import 'package:flutter/material.dart';
+import 'package:resq/bottom_sheet.dart';
 import 'dart:math' as math;
 
 import './weathermap.dart';
@@ -69,11 +70,17 @@ class _MoreState extends State<More> {
             onTap: () {
               print("tapped the $index th block");
               if (index == 0) {
-                _selectedValue=null;
+                _selectedValue = null;
                 showModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(h / 40))),
                     context: context,
                     builder: (_) {
-                      return Container(
+                      return BottomContainerForm(
+                        dropdownItems: dropdownItems,
+                      );
+                      /* Container(
                         //color: Colors.yellow,
                         child: Form(
                           key: _formkey,
@@ -136,7 +143,7 @@ class _MoreState extends State<More> {
                             ],
                           ),
                         ),
-                      );
+                      ); */
                     });
               }
               if (index == 1) {

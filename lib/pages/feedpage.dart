@@ -31,11 +31,11 @@ class _FeedState extends State<Feed> {
   }
 
   _getFirstPosts() {
-
+    _getPosts('http://kresq.herokuapp.com/resq/userpost/');
   }
 
   _loadmore() {
-
+    _getPosts(next);
   }
 
   _makePost() async {}
@@ -61,7 +61,7 @@ class _FeedState extends State<Feed> {
           ),
           Expanded(
             child: FutureBuilder(
-                future: _getPosts('http://26dd09c3920e.ngrok.io/resq/userpost/'),
+                future: _getFirstPosts(),
                 builder: (context, snap) {
                   if (snap.connectionState == ConnectionState.none &&
                       snap.hasData == null) {
@@ -89,6 +89,7 @@ class _FeedState extends State<Feed> {
                               body['results'][index]["isDonate"],
                               body['results'][index]["isAnnouncement"]),
                           feedId: body['results'][index]["id"],
+                          contactNo: body['results'][index]["contactphn"],
                           isVoted: body['results'][index]["upvotes"]
                                   .contains("Anandhan")
                               ? true

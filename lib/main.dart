@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
+import 'package:resq/common_file.dart';
+import 'package:resq/pages/login_page.dart';
 import './pages/homepage.dart';
 import './pages/weathermap.dart';
+import './pages/register_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => LoggedUser(), child: MyApp()));
 }
 
+Position location;
+
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,8 +33,10 @@ class MyApp extends StatelessWidget {
       ),
       //home: MyHomePage(),
       routes: {
-        '/': (context) => MyHomePage(),
+        '/': (context) => /* LoginPage()  */ /*  MyHomePage() */ RegisterPage(),
         WeatherMap.routeName: (context) => WeatherMap(),
+        LoginPage.routeName: (context) => LoginPage(),
+        RegisterPage.routeName: (context) => RegisterPage(),
       },
     );
   }

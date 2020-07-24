@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FeedBox extends StatefulWidget {
   FeedBox(
       {Key key,
       @required this.votes,
       @required this.genre,
+      @required this.contactNo,
       @required this.name,
       @required this.isVoted,
       @required this.description,
@@ -19,6 +21,7 @@ class FeedBox extends StatefulWidget {
   final String genre;
   final int feedId;
   var isVoted;
+  final contactNo;
   final String imgLink;
   final String description;
 
@@ -153,10 +156,20 @@ class _FeedBoxState extends State<FeedBox> {
                                   ListTile(
                                     title: Text("Location"),
                                   ),
-                                  ListTile(
-                                    title: Text(
-                                      "Phone",
+                                  InkWell(
+                                    child: ListTile(
+                                      title: Text(
+                                        "Phone",
+                                      ),
                                     ),
+                                    onTap: () => () async {
+                                      String url = "tel:" + widget.contactNo;
+                                      if (await canLaunch(url)) {
+                                        await launch(url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
                                   ),
                                 ],
                               ),
