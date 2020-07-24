@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from math import sin, cos, sqrt, atan2, radians
 from decimal import Decimal
 from django.shortcuts import get_object_or_404
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 class UserProfileViewSet(ModelViewSet):
     serializer_class=UserProfileSerializer
@@ -44,12 +46,21 @@ class UserPostViewSet(ModelViewSet):
     permission_classes=(IsAuthenticatedOrReadOnly,UserPostPermission,)
     authentication_classes=(TokenAuthentication,)
     pagination_class=UserProfilePagination
+
+
+    filter_backends = [filters.OrderingFilter,DjangoFilterBackend,]
+    filterset_fields =['isAnnouncement','isDonate','isRequest']
+    ordering_fields = ['creationtime', 'upvotes']
+
     def perform_create(self, serializer):
         #serializer.save(upvotes=[self.request.user])
         return serializer.save(userprofile=self.request.user)
 
     def get_queryset(self):
-        #obj=self.get_object()
+        # ob=self.request.query_params.get('orderby',None)
+        # typ=self.request.query_params.get('typ',None)
+        # if ob is not None and typ is not None:
+        #     queryset=UserPost.objects.
         queryset=UserPost.objects.all()
         lat=self.request.query_params.get('lat',None)
         lon=self.request.query_params.get('lon',None)
