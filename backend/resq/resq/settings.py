@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'flood',
-    'rest_framework_swagger'
+    'rest_framework_swagger',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

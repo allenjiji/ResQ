@@ -43,7 +43,7 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
     objects=UserProfileManager()
 
     def __str__(self):
-        return self.phone
+        return self.name
 
 
 
@@ -83,4 +83,4 @@ class UserPost(models.Model):
     objects=UserPostManager()
 
     def __str__(self):
-        return self.content
+        return self.userprofile
