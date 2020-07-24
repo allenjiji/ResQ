@@ -8,12 +8,14 @@ class FeedBox extends StatefulWidget {
       @required this.name,
       @required this.isVoted,
       @required this.description,
-      @required this.imgLink,
+      @required this.heading,
+      this.imgLink,
       @required this.feedId})
       : super(key: key);
 
   final String name;
   int votes;
+  final String heading;
   final String genre;
   final int feedId;
   var isVoted;
@@ -88,6 +90,8 @@ class _FeedBoxState extends State<FeedBox> {
             ),
           ),
           Container(
+              alignment: Alignment.centerLeft,
+              width: double.infinity,
               decoration: BoxDecoration(
                 border: Border(
                     left: BorderSide(
@@ -96,10 +100,15 @@ class _FeedBoxState extends State<FeedBox> {
                 )),
               ),
               padding: EdgeInsets.only(left: 10, top: 10),
-              child: Text(
-                widget.description,
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 15),
+              child: Column(
+                children: <Widget>[
+                  Text(widget.heading),
+                  Text(
+                    widget.description,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ],
               )),
           Container(
             padding: EdgeInsets.all(20),
