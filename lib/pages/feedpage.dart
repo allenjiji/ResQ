@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:resq/bottom_sheet.dart';
 import '../common_file.dart';
@@ -22,20 +23,19 @@ List<List<String>> dropdownItems = [
   ["Service/സേവനം", "service"],
   ["Other Needs/മറ്റു ആവശ്യങ്ങള്‍", "others"],
 ];
+List<List<String>> dropdownItems2 = [
+  ["Request/അഭ്യർത്ഥന", "request"],
+  ["Announcement/അറിയിപ്പുകൾ", "announcement"],
+  ["Donate/ദാനം", "supply"],
+];
 
 class _FeedState extends State<Feed> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Post p = new Post();
+
   String next;
   String prev;
-  _getPosts(String url) async {
-    print("Entered _getpost()");
-    Response response = await get(url);
-    int statuscode = response.statusCode;
-    //String response_body = response.body;
-    //print(statuscode);
-    //print(response);
-    //print(response_body);
-    return response;
-  }
+  
 
   String _genreDecider(bool isRequest, bool isDonate, bool isAnnouncement) {
     if (isRequest) return "request";
@@ -43,21 +43,75 @@ class _FeedState extends State<Feed> {
     if (isDonate) return "supply";
   }
 
-  _getFirstPosts() {
-    print("Entered _getFirstPosts()");
-    return _getPosts('http://kresq.herokuapp.com/resq/userpost/');
-  }
 
-  _loadmore() {
-    print("Entered _loadmore()");
-    return _getPosts(next);
-  }
-
-  _makePost() async {}
 
   @override
   Widget build(BuildContext context) {
+    final Post _post = Provider.of<Post>(context, listen: false);
     final h = MediaQuery.of(context).size.height;
+    List<Widget> bottonSheetItems = [
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration:
+            InputDecoration(hintText: "Name/പേര് ", labelText: "Name/പേര് "),
+      ),
+      TextFormField(
+        keyboardType: TextInputType.number,
+        decoration:
+            InputDecoration(hintText: "Phone/ഫോൺ ", labelText: "Phone/ഫോൺ "),
+        onSaved: (newValue) => p.phone = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration:
+            InputDecoration(hintText: "Place/സ്ഥലം", labelText: "Place/സ്ഥലം"),
+        onSaved: (newValue) => p.place = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            hintText: "District/ജില്ല", labelText: "District/ജില്ല"),
+        onSaved: (newValue) => p.district = newValue,
+      ),
+      NewDropDown2(
+        dropDownItems: dropdownItems2,
+        postObject: p,
+      ),
+      NewDropDown(
+        dropDownItems: dropdownItems,
+        postObject: p,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            hintText: "Heading/തലക്കെട്ട്", labelText: "Heading/തലക്കെട്ട്"),
+        onSaved: (newValue) => p.heading = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.multiline,
+        decoration: InputDecoration(
+            hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
+        onSaved: (newValue) => p.description = newValue,
+      ),
+      ButtonTheme(
+        minWidth: double.infinity,
+        //height:,
+        child: FlatButton(
+          onPressed: () async {
+            Position position = await Geolocator()
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+            p.position = position;
+            if (formKey.currentState.validate()) {
+              formKey.currentState.save();
+              print("Saved");
+              print("${p.genre}");
+              _post.makePost(p);
+            }
+          },
+          child: Text("SUBMIT"),
+        ),
+      ),
+    ];
     return Container(
       child: Column(
         children: <Widget>[
@@ -77,13 +131,14 @@ class _FeedState extends State<Feed> {
                     context: context,
                     builder: (_) {
                       return BottomContainerForm(
-                        items: <Widget>[],
+                        formKey: formKey,
+                        items: bottonSheetItems,
                       );
                     })),
           ),
           Expanded(
               child: FutureBuilder(
-            future: _getFirstPosts(),
+            future: _post.getFirstPosts(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
@@ -103,28 +158,33 @@ class _FeedState extends State<Feed> {
                         return Center(child: Text("No Feeds"));
                       }
                       return LazyLoadScrollView(
-                        onEndOfPage: () => _loadmore(),
+                        onEndOfPage: () => _post.loadmore(next),
                         child: ListView.builder(
                           itemCount: data['results'].length,
                           itemBuilder: (context, index) {
-                            return FeedBox(
+                            Post p = new Post(
+                              description: data['results'][index]["content"],
                               heading: data['results'][index]["heading"],
                               genre: _genreDecider(
                                   data['results'][index]["isRequest"],
                                   data['results'][index]["isDonate"],
                                   data['results'][index]["isAnnouncement"]),
-                              feedId: data['results'][index]["id"],
-                              contactNo: data['results'][index]["contactphn"],
                               isVoted: data['results'][index]["upvotes"]
                                       .contains("Anandhan")
                                   ? true
                                   : false,
-                              votes: data['results'][index]["upvotes"].length,
-                              description: data['results'][index]["content"],
-                              imgLink: data['results'][index]["image"] == null
+                              phone: data['results'][index]["contactphn"],
+                              image: data['results'][index]["image"] == null
                                   ? "https://raw.githubusercontent.com/allenjiji/ResQ/front-end/lib/08_color.png?token=ALNRNEZXEUK4AIA42FAXKMS7DKV6M"
                                   : data['results'][index]["image"],
-                              name: data['results'][index]["userprofile"].toString() ,
+                              postId: data['results'][index]["id"],
+                              votes: data['results'][index]["upvotes"].length,
+                              name: data['results'][index]["userprofile"]
+                                  .toString()
+                                  .toString(),
+                            );
+                            return FeedBox(
+                              p: p,
                             );
                           },
                         ),

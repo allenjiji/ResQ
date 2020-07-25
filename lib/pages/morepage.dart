@@ -4,6 +4,7 @@ import 'package:resq/common_file.dart';
 import 'package:flutter/material.dart';
 import 'package:resq/bottom_sheet.dart';
 import 'package:resq/custom_widgets.dart';
+import 'package:resq/pages/announcements.dart';
 import 'dart:math' as math;
 
 import './weathermap.dart';
@@ -13,7 +14,7 @@ class More extends StatefulWidget {
   _MoreState createState() => _MoreState();
 }
 
-class RequestData {
+/* class RequestData {
   String district;
   String place;
   Position location;
@@ -21,7 +22,7 @@ class RequestData {
   String phone;
   String request;
 }
-
+ */
 class _MoreState extends State<More> {
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   List<Color> colors = [Colors.blue];
@@ -132,23 +133,31 @@ class _MoreState extends State<More> {
           return InkWell(
             onTap: () {
               print("tapped the $index th block");
-              if (index == 0) {
-                showModalBottomSheet(
-                    enableDrag: true,
-                    //isScrollControlled: true,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(h / 40))),
-                    context: context,
-                    builder: (_) {
-                      return BottomContainerForm(
-                        formKey: formKey,
-                        items: bottonSheetItems,
-                      );
-                    });
-              }
-              if (index == 1) {
-                Navigator.of(context).pushNamed(WeatherMap.routeName);
+
+              switch (index) {
+                case 0:
+                  showModalBottomSheet(
+                      enableDrag: true,
+                      //isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(h / 40))),
+                      context: context,
+                      builder: (_) {
+                        return BottomContainerForm(
+                          formKey: formKey,
+                          items: bottonSheetItems,
+                        );
+                      });
+
+                  break;
+                case 1:
+                  Navigator.of(context).pushNamed(WeatherMap.routeName);
+                  break;
+                case 2:
+                  Navigator.of(context).pushNamed(Announcement.routeName);
+                  break;
+                default:
               }
             },
             child: Container(

@@ -68,10 +68,11 @@ class LoggedUser with ChangeNotifier {
 }
 
 class Post with ChangeNotifier {
-  String postId;
-  String genre;
+  int postId;
+  String name;
+  String category;
   Position position;
-  String need;
+  String genre;
   String heading;
   String image;
   String description;
@@ -79,6 +80,23 @@ class Post with ChangeNotifier {
   String phone;
   String place;
   String district;
+  bool isVoted;
+  int votes;
+  Post(
+      {@required this.postId,
+      @required this.position,
+      this.name,
+      this.genre,
+      this.category,
+      @required this.heading,
+      @required this.description,
+      this.image,
+      this.district,
+      this.place,
+      @required this.isVoted,
+      @required this.votes,
+      @required this.phone,
+      this.location});
 
   makePost(Post p) async {
     const url = 'http://kresq.herokuapp.com/resq/userpost/';
@@ -86,6 +104,7 @@ class Post with ChangeNotifier {
       "heading": p.heading,
       "content": p.description,
       "contactphn": p.phone,
+      "i": p.category,
       "lat": p.position.latitude.toStringAsFixed(5),
       "lon": p.position.longitude.toStringAsFixed(5)
     };
@@ -103,16 +122,59 @@ class Post with ChangeNotifier {
 
   likepost(Post p) async {
     var url = 'http://kresq.herokuapp.com/resq/upvote/${p.postId}';
-    Map<String, String> headers = {"Content-type": "application/json"};
-    Response response = await put(url, headers: headers);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String token = prefs.getString('token');
+    Response response = await put(
+      url,
+      headers: {
+        'Authorization': 'Token $token',
+        "Content-type": "application/json"
+      },
+    );
     int statusCode = response.statusCode;
     print("like --> $statusCode");
   }
 
   unlikepost(Post p) async {
     var url = 'http://kresq.herokuapp.com/resq/upvote/${p.postId}';
-    Response response = await delete(url);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String token = prefs.getString('token');
+    Response response = await delete(
+      url,
+      headers: {
+        'Authorization': 'Token $token',
+        "Content-type": "application/json"
+      },
+    );
     int statusCode = response.statusCode;
     print("unlike --> $statusCode");
+  }
+
+  getFirstPosts() {
+    print("Entered _getFirstPosts()");
+    return getPosts('http://kresq.herokuapp.com/resq/userpost/');
+  }
+
+  getAnnouncements(){
+    print("Entered _getAnnouncements()");
+    return getPosts('http://kresq.herokuapp.com/resq/userpost/?isAnnouncement=True');
+  }
+
+  loadmore(String next) {
+    print("Entered loadmore()");
+    return getPosts(next);
+  }
+
+  //makePost() async {}
+
+  getPosts(String url) async {
+    print("Entered getpost()");
+    Response response = await get(url);
+    int statuscode = response.statusCode;
+    //String response_body = response.body;
+    //print(statuscode);
+    //print(response);
+    //print(response_body);
+    return response;
   }
 }

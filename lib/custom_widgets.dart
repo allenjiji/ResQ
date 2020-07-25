@@ -4,28 +4,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'common_file.dart';
 
 class FeedBox extends StatefulWidget {
-  FeedBox(
-      {Key key,
-      @required this.votes,
-      @required this.genre,
-      @required this.contactNo,
-      @required this.name,
-      @required this.isVoted,
-      @required this.description,
-      @required this.heading,
-      this.imgLink,
-      @required this.feedId})
-      : super(key: key);
+  FeedBox({Key key, @required this.p}) : super(key: key);
 
-  final String name;
-  int votes;
-  final String heading;
-  final String genre;
-  final int feedId;
-  var isVoted;
-  final contactNo;
-  final String imgLink;
-  final String description;
+  final Post p;
 
   Color colorDecider(String genre) {
     switch (genre) {
@@ -67,7 +48,7 @@ class _FeedBoxState extends State<FeedBox> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    widget.name,
+                    widget.p.name,
                     style: TextStyle(
                       fontSize: 20,
                       color: Theme.of(context).primaryColor,
@@ -90,7 +71,7 @@ class _FeedBoxState extends State<FeedBox> {
           ),
           Container(
             child: Image(
-              image: NetworkImage(widget.imgLink),
+              image: NetworkImage(widget.p.image),
               fit: BoxFit.cover,
             ),
           ),
@@ -101,15 +82,15 @@ class _FeedBoxState extends State<FeedBox> {
                 border: Border(
                     left: BorderSide(
                   width: MediaQuery.of(context).size.height * 0.01,
-                  color: widget.colorDecider(widget.genre),
+                  color: widget.colorDecider(widget.p.genre),
                 )),
               ),
               padding: EdgeInsets.only(left: 10, top: 10),
               child: Column(
                 children: <Widget>[
-                  Text(widget.heading),
+                  Text(widget.p.heading),
                   Text(
-                    widget.description,
+                    widget.p.description,
                     textAlign: TextAlign.left,
                     style: TextStyle(fontSize: 15),
                   ),
@@ -123,25 +104,27 @@ class _FeedBoxState extends State<FeedBox> {
                 InkWell(
                   child: Icon(
                     Icons.arrow_upward,
-                    color: !widget.isVoted
+                    color: !widget.p.isVoted
                         ? Theme.of(context).primaryColor
                         : Colors.red,
                   ),
                   onTap: () {
-                    if (widget.isVoted) {
+                    if (widget.p.isVoted) {
+                      widget.p.unlikepost(widget.p);
                       setState(() {
-                        widget.votes -= 1;
-                        widget.isVoted = false;
+                        widget.p.votes -= 1;
+                        widget.p.isVoted = false;
                       });
                     } else {
+                      widget.p.likepost(widget.p);
                       setState(() {
-                        widget.votes += 1;
-                        widget.isVoted = true;
+                        widget.p.votes += 1;
+                        widget.p.isVoted = true;
                       });
                     }
                   },
                 ),
-                Text("${widget.votes} Upvotes"),
+                Text("${widget.p.votes} Upvotes"),
                 InkWell(
                     child: Text(
                       "CONTACT",
@@ -165,7 +148,7 @@ class _FeedBoxState extends State<FeedBox> {
                                       ),
                                     ),
                                     onTap: () => () async {
-                                      String url = "tel:" + widget.contactNo;
+                                      String url = "tel:" + widget.p.phone;
                                       if (await canLaunch(url)) {
                                         await launch(url);
                                       } else {
@@ -189,8 +172,8 @@ class _FeedBoxState extends State<FeedBox> {
 
 class NewDropDown extends StatefulWidget {
   final List dropDownItems;
-  final Post postObject ;
-  NewDropDown({@required this.dropDownItems,@required this.postObject});
+  final Post postObject;
+  NewDropDown({@required this.dropDownItems, @required this.postObject});
   @override
   _NewDropDownState createState() => _NewDropDownState();
 }
@@ -200,7 +183,7 @@ class _NewDropDownState extends State<NewDropDown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
-      hint: Text("Select Your Need"),
+      hint: Text("Select Need/ആവശ്യം"),
       value: _selectedValue,
       items: widget.dropDownItems
           .map((e) => DropdownMenuItem(
@@ -210,7 +193,43 @@ class _NewDropDownState extends State<NewDropDown> {
           .toList(),
       onChanged: (value) {
         print("selected $value from dropdown");
-        widget.postObject.genre=value;
+        widget.postObject.category = value;
+        widget.postObject.genre = 'request';
+        setState(() {
+          _selectedValue = "$value";
+        });
+      },
+      onTap: () {
+        setState(() {});
+      },
+    );
+  }
+}
+
+class NewDropDown2 extends StatefulWidget {
+  final List dropDownItems;
+  final Post postObject;
+  NewDropDown2({@required this.dropDownItems, @required this.postObject});
+  @override
+  _NewDropDown2State createState() => _NewDropDown2State();
+}
+
+class _NewDropDown2State extends State<NewDropDown2> {
+  @override
+  String _selectedValue = null;
+  Widget build(BuildContext context) {
+    return DropdownButton(
+      hint: Text("Select Category/വിഭാഗം"),
+      value: _selectedValue,
+      items: widget.dropDownItems
+          .map((e) => DropdownMenuItem(
+                child: Text(e[0]),
+                value: e[1],
+              ))
+          .toList(),
+      onChanged: (value) {
+        print("selected $value from dropdown");
+        widget.postObject.genre = value;
         setState(() {
           _selectedValue = "$value";
         });
