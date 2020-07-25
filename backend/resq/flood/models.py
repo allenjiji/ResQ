@@ -35,6 +35,7 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
     address=models.CharField(max_length=200,null=True)
     lat=models.DecimalField(max_digits=9,decimal_places=6)
     lon=models.DecimalField(max_digits=9,decimal_places=6)
+    is_staff=models.BooleanField(default=False,blank=True,null=True)
 
     REQUIRED_FIELDS=['lat','lon','is_volunteer']
 
