@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'common_file.dart';
+
 class FeedBox extends StatefulWidget {
   FeedBox(
       {Key key,
@@ -181,6 +183,41 @@ class _FeedBoxState extends State<FeedBox> {
           )
         ],
       ),
+    );
+  }
+}
+
+class NewDropDown extends StatefulWidget {
+  final List dropDownItems;
+  final Post postObject ;
+  NewDropDown({@required this.dropDownItems,@required this.postObject});
+  @override
+  _NewDropDownState createState() => _NewDropDownState();
+}
+
+class _NewDropDownState extends State<NewDropDown> {
+  String _selectedValue = null;
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton(
+      hint: Text("Select Your Need"),
+      value: _selectedValue,
+      items: widget.dropDownItems
+          .map((e) => DropdownMenuItem(
+                child: Text(e[0]),
+                value: e[1],
+              ))
+          .toList(),
+      onChanged: (value) {
+        print("selected $value from dropdown");
+        widget.postObject.genre=value;
+        setState(() {
+          _selectedValue = "$value";
+        });
+      },
+      onTap: () {
+        setState(() {});
+      },
     );
   }
 }

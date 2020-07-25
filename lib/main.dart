@@ -13,12 +13,12 @@ void main() {
 }
 
 Position location;
+bool isLogin = false;
 
 class MyApp extends StatelessWidget {
-  
-
   @override
   Widget build(BuildContext context) {
+    final LoggedUser user = Provider.of<LoggedUser>(context, listen: false);
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -33,7 +33,20 @@ class MyApp extends StatelessWidget {
       ),
       //home: MyHomePage(),
       routes: {
-        '/': (context) => /* LoginPage()  */ /*  MyHomePage() */ RegisterPage(),
+        '/': (context) => FutureBuilder(
+              builder: (context, snapshot) {
+                //print(" ${snapshot.data}");
+                if (snapshot.hasData) {
+                  if (snapshot.data) {
+                    return ChangeNotifierProvider(
+                        create: (context) => Post(), child: MyHomePage());
+                  }
+                  return RegisterPage();
+                }
+                return Container();
+              },
+              future: user.isLoggedin(),
+            ),
         WeatherMap.routeName: (context) => WeatherMap(),
         LoginPage.routeName: (context) => LoginPage(),
         RegisterPage.routeName: (context) => RegisterPage(),

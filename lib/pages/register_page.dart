@@ -6,21 +6,27 @@ import 'package:resq/main.dart';
 import '../common_file.dart';
 
 class RegisterPage extends StatefulWidget {
-  final Position location=null;
+  final Position location = null;
   static const routeName = '/register';
+  final phoneConroller = TextEditingController();
+  final passController = TextEditingController();
+  final nameController = TextEditingController();
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
   @override
-  Widget build(BuildContext context) {
-    
-    final phoneConroller = TextEditingController();
-    final passController = TextEditingController();
-    final nameController = TextEditingController();
+  dispose() {
+    super.dispose();
+    widget.phoneConroller.dispose();
+    widget.nameController.dispose();
+    widget.passController.dispose();
+  }
 
-    final LoggedUser user = Provider.of<LoggedUser>(context,listen: false);
+  @override
+  Widget build(BuildContext context) {
+    final LoggedUser user = Provider.of<LoggedUser>(context, listen: false);
 
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
@@ -28,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final phoneField = TextField(
       keyboardType: TextInputType.text,
       //style: style,
-      controller: phoneConroller,
+      controller: widget.phoneConroller,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Phone/ഫോൺ",
@@ -37,7 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
     final passwordField = TextField(
       obscureText: true,
-      controller: passController,
+      controller: widget.passController,
       //style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -53,14 +59,15 @@ class _RegisterPageState extends State<RegisterPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          print(phoneConroller.text);
-          print(passController.text);
-          print(nameController.text);
-          user.name = nameController.text;
-          user.phone = phoneConroller.text;
-          user.password = passController.text;
+          print(widget.phoneConroller.text);
+          print(widget.passController.text);
+          print(widget.nameController.text);
+          user.name = widget.nameController.text;
+          user.phone = widget.phoneConroller.text;
+          user.password = widget.passController.text;
           user.getLocation();
-          user.register( (phoneConroller.text), (passController.text), (nameController.text));
+          user.register((widget.phoneConroller.text),
+              (widget.passController.text), (widget.nameController.text),context);
         },
         child: Text("Register",
             textAlign: TextAlign.center,
@@ -91,7 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextField(
                   keyboardType: TextInputType.text,
                   //style: style,
-                  controller: nameController,
+                  controller: widget.nameController,
                   decoration: InputDecoration(
                       contentPadding:
                           EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),

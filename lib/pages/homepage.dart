@@ -5,6 +5,7 @@ import 'mapspage.dart';
 import 'contactspage.dart';
 
 class MyHomePage extends StatefulWidget {
+  static const routeName = '/home';
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }

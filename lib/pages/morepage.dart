@@ -1,7 +1,9 @@
 import 'package:geolocator/geolocator.dart';
-
+import 'package:provider/provider.dart';
+import 'package:resq/common_file.dart';
 import 'package:flutter/material.dart';
 import 'package:resq/bottom_sheet.dart';
+import 'package:resq/custom_widgets.dart';
 import 'dart:math' as math;
 
 import './weathermap.dart';
@@ -23,8 +25,6 @@ class RequestData {
 class _MoreState extends State<More> {
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   List<Color> colors = [Colors.blue];
-
-  String _selectedValue = null;
 
   List<List<String>> dropdownItems = [
     ["Rescue/രക്ഷാപ്രവർത്തനം", "rescue"],
@@ -58,6 +58,69 @@ class _MoreState extends State<More> {
 
   @override
   Widget build(BuildContext context) {
+    final Post _post = Provider.of<Post>(context, listen: false);
+    Post p = new Post();
+    final GlobalKey<FormState> formKey = GlobalKey();
+
+    List<Widget> bottonSheetItems = [
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration:
+            InputDecoration(hintText: "Name/പേര് ", labelText: "Name/പേര് "),
+      ),
+      TextFormField(
+        keyboardType: TextInputType.number,
+        decoration:
+            InputDecoration(hintText: "Phone/ഫോൺ ", labelText: "Phone/ഫോൺ "),
+        onSaved: (newValue) => p.phone = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration:
+            InputDecoration(hintText: "Place/സ്ഥലം", labelText: "Place/സ്ഥലം"),
+        onSaved: (newValue) => p.place = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            hintText: "District/ജില്ല", labelText: "District/ജില്ല"),
+        onSaved: (newValue) => p.district = newValue,
+      ),
+      NewDropDown(
+        dropDownItems: dropdownItems,
+        postObject: p,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            hintText: "Heading/തലക്കെട്ട്", labelText: "Heading/തലക്കെട്ട്"),
+        onSaved: (newValue) => p.heading = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.multiline,
+        decoration: InputDecoration(
+            hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
+        onSaved: (newValue) => p.description = newValue,
+      ),
+      ButtonTheme(
+        minWidth: double.infinity,
+        //height:,
+        child: FlatButton(
+          onPressed: () async {
+            Position position = await Geolocator()
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+            p.position = position;
+            if (formKey.currentState.validate()) {
+              formKey.currentState.save();
+              print("Saved");
+              print("${p.genre}");
+              _post.makePost(p);
+            }
+          },
+          child: Text("SUBMIT"),
+        ),
+      ),
+    ];
     var h = MediaQuery.of(context).size.height;
     return Container(
       //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
@@ -70,80 +133,18 @@ class _MoreState extends State<More> {
             onTap: () {
               print("tapped the $index th block");
               if (index == 0) {
-                _selectedValue = null;
                 showModalBottomSheet(
+                    enableDrag: true,
+                    //isScrollControlled: true,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
                             top: Radius.circular(h / 40))),
                     context: context,
                     builder: (_) {
                       return BottomContainerForm(
-                        dropdownItems: dropdownItems,
+                        formKey: formKey,
+                        items: bottonSheetItems,
                       );
-                      /* Container(
-                        //color: Colors.yellow,
-                        child: Form(
-                          key: _formkey,
-                          child: ListView(
-                            //itemExtent: h/15,
-                            children: <Widget>[
-                              TextFormField(
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                    hintText: "Name/പേര് ",
-                                    labelText: "Name/പേര് "),
-                              ),
-                              TextFormField(
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                    hintText: "Phone/ഫോൺ ",
-                                    labelText: "Phone/ഫോൺ "),
-                              ),
-                              TextFormField(
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                    hintText: "Place/സ്ഥലം",
-                                    labelText: "Place/സ്ഥലം"),
-                              ),
-                              TextFormField(
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: InputDecoration(
-                                    hintText: "District/ജില്ല",
-                                    labelText: "District/ജില്ല"),
-                              ),
-                              DropdownButton(
-                                hint: Text("Select Your Need"),
-                                value: _selectedValue,
-                                items: dropdownItems
-                                    .map((e) => DropdownMenuItem(
-                                          child: Text(e[0]),
-                                          value: e[1],
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  print("selected $value from dropdown");
-                                  setState(() {
-                                    _selectedValue = "$value";
-                                  });
-                                },
-                                onTap: () {
-                                  setState(() {
-                                    
-                                  });
-                                },
-                              ),
-                              ButtonTheme(
-                                minWidth: double.infinity,
-                                //height:,
-                                child: FlatButton(
-                                  onPressed: () {},
-                                  child: Text("SUBMIT"),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ); */
                     });
               }
               if (index == 1) {
