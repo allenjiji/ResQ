@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:resq/bottom_sheet.dart';
 import 'package:resq/custom_widgets.dart';
 import 'package:resq/pages/announcements.dart';
+import 'package:resq/pages/faqPage.dart';
+import 'package:resq/pages/guidePage.dart';
 import 'dart:math' as math;
 
 import './weathermap.dart';
@@ -47,8 +49,8 @@ class _MoreState extends State<More> {
     ["FAQ", "ചോദ്യങ്ങൾ", Icons.help_outline],
     ["Guide", "നിർദ്ദേശങ്ങൾ", Icons.message],
     ["My Profile", "പ്രൊഫൈൽ", Icons.portrait],
-    ["Medical Support", "വൈദ്യ സഹായം", Icons.local_hospital],
     ["My Posts", "പോസ്റ്റുകൾ", Icons.photo_size_select_large],
+    ["logout",'',Icons.local_florist]
   ];
   List<String> textFieldTexts = [
     "Name/പേര് ",
@@ -60,10 +62,11 @@ class _MoreState extends State<More> {
   @override
   Widget build(BuildContext context) {
     final Post _post = Provider.of<Post>(context, listen: false);
+    final LoggedUser user = LoggedUser();
     Post p = new Post();
     final GlobalKey<FormState> formKey = GlobalKey();
 
-    List<Widget> bottonSheetItems = [
+    List<Widget> bottonSheetItemsRequests = [
       TextFormField(
         keyboardType: TextInputType.text,
         decoration:
@@ -122,6 +125,66 @@ class _MoreState extends State<More> {
         ),
       ),
     ];
+    List<Widget> bottonSheetItemsDonate = [
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration:
+            InputDecoration(hintText: "Name/പേര് ", labelText: "Name/പേര് "),
+      ),
+      TextFormField(
+        keyboardType: TextInputType.number,
+        decoration:
+            InputDecoration(hintText: "Phone/ഫോൺ ", labelText: "Phone/ഫോൺ "),
+        onSaved: (newValue) => p.phone = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration:
+            InputDecoration(hintText: "Place/സ്ഥലം", labelText: "Place/സ്ഥലം"),
+        onSaved: (newValue) => p.place = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            hintText: "District/ജില്ല", labelText: "District/ജില്ല"),
+        onSaved: (newValue) => p.district = newValue,
+      ),
+      NewDropDown(
+        dropDownItems: dropdownItems,
+        postObject: p,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            hintText: "Heading/തലക്കെട്ട്", labelText: "Heading/തലക്കെട്ട്"),
+        onSaved: (newValue) => p.heading = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.multiline,
+        decoration: InputDecoration(
+            hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
+        onSaved: (newValue) => p.description = newValue,
+      ),
+      ButtonTheme(
+        minWidth: double.infinity,
+        //height:,
+        child: FlatButton(
+          onPressed: () async {
+            Position position = await Geolocator()
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+            p.position = position;
+            //p.
+            if (formKey.currentState.validate()) {
+              formKey.currentState.save();
+              print("Saved");
+              print("${p.genre}");
+              _post.makePost(p);
+            }
+          },
+          child: Text("SUBMIT"),
+        ),
+      ),
+    ];
     var h = MediaQuery.of(context).size.height;
     return Container(
       //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
@@ -129,7 +192,7 @@ class _MoreState extends State<More> {
       child: GridView.count(
         crossAxisCount: 2,
         //padding: EdgeInsets.all(h / 30),
-        children: List.generate(10, (index) {
+        children: List.generate(texts.length, (index) {
           return InkWell(
             onTap: () {
               print("tapped the $index th block");
@@ -146,7 +209,7 @@ class _MoreState extends State<More> {
                       builder: (_) {
                         return BottomContainerForm(
                           formKey: formKey,
-                          items: bottonSheetItems,
+                          items: bottonSheetItemsRequests,
                         );
                       });
 
@@ -156,6 +219,29 @@ class _MoreState extends State<More> {
                   break;
                 case 2:
                   Navigator.of(context).pushNamed(Announcement.routeName);
+                  break;
+                case 3:
+                  showModalBottomSheet(
+                      enableDrag: true,
+                      //isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(h / 40))),
+                      context: context,
+                      builder: (_) {
+                        return BottomContainerForm(
+                          formKey: formKey,
+                          items: bottonSheetItemsDonate,
+                        );
+                      });
+                  break;
+                case 5:
+                  Navigator.of(context).pushNamed(FAQPage.routeName);
+                  break;
+                case 6:
+                  Navigator.of(context).pushNamed(GuidePage.routeName);
+                  break;
+                  case 9: user.logout(context);
                   break;
                 default:
               }

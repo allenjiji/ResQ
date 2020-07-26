@@ -16,6 +16,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool isloading = false;
   @override
   dispose() {
     super.dispose();
@@ -58,16 +59,27 @@ class _RegisterPageState extends State<RegisterPage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          print(widget.phoneConroller.text);
+        onPressed: () async {
+          print("hello ${widget.phoneConroller.text}");
           print(widget.passController.text);
           print(widget.nameController.text);
+          if (widget.phoneConroller.text != '' &&
+              widget.passController.text != '' &&
+              widget.nameController.text != '') {
+            setState(() {
+              isloading = true;
+            });
+          }
           user.name = widget.nameController.text;
           user.phone = widget.phoneConroller.text;
           user.password = widget.passController.text;
-          user.getLocation();
-          user.register((widget.phoneConroller.text),
-              (widget.passController.text), (widget.nameController.text),context);
+          var location = await user.getLocation();
+          user.register(
+              (widget.phoneConroller.text),
+              (widget.passController.text),
+              (widget.nameController.text),
+              context,
+              location);
         },
         child: Text("Register",
             textAlign: TextAlign.center,
@@ -115,6 +127,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   height: h / 50,
                 ),
+                Container(
+                    child: isloading
+                        ? CircularProgressIndicator(
+                            backgroundColor: Colors.red,
+                          )
+                        : Container())
               ],
             ),
           ),

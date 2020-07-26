@@ -140,6 +140,7 @@ class _FeedState extends State<Feed> {
               child: FutureBuilder(
             future: _post.getFirstPosts(),
             builder: (context, snapshot) {
+              print(snapshot.connectionState);
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
                   return Center(child: Text("Loading..."));
@@ -189,6 +190,9 @@ class _FeedState extends State<Feed> {
                           },
                         ),
                       );
+                    }
+                    else{
+                       return Center(child: Text("No Internet Connection"));
                     }
                   }
                   break;

@@ -3,33 +3,38 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'dart:math';
-class Contacts extends StatelessWidget {
 
+class Contacts extends StatelessWidget {
   Future get_list() async {
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    String url="http://kresq.herokuapp.com/resq/userprofile/?lat=${position.latitude}&lon=${position.longitude}";
-    var response=await http.get(url);
-    if(response.statusCode==200){
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    String url =
+        "http://kresq.herokuapp.com/resq/userprofile/?lat=${position.latitude}&lon=${position.longitude}";
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);
       print(jsonResponse);
-      if(7<jsonResponse.length) jsonResponse=jsonResponse.subList(0,7);
-      var kj=[];
-      jsonResponse.forEach((elem)=>kj.add({elem['name'],elem['phone']}));
+      if (7 < jsonResponse.length) jsonResponse = jsonResponse.subList(0, 7);
+      var kj = [];
+      jsonResponse.forEach((elem) => kj.add({elem['name'], elem['phone']}));
       return kj;
-    }
-    else{
+    } else {
       return [];
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       child: ListView(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(5),
-            child: Text('General Helpline Numbers',style: TextStyle(fontSize: 30),),
+            child: Text(
+              'General Helpline Numbers',
+              style: TextStyle(fontSize: 30),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(20),
@@ -43,13 +48,14 @@ District toll-free helpline: 1077'''),
           ),
           Padding(
             padding: const EdgeInsets.all(5),
-            child: Text('Numbers of Volunteers nearby',style: TextStyle(fontSize: 30)),
+            child: Text('Numbers of Volunteers nearby',
+                style: TextStyle(fontSize: 30)),
           ),
           FutureBuilder(builder: null),
-          
           Padding(
             padding: const EdgeInsets.all(5),
-            child: Text('Districtwise Helpline Numbers',style: TextStyle(fontSize: 30)),
+            child: Text('Districtwise Helpline Numbers',
+                style: TextStyle(fontSize: 30)),
           ),
           Padding(
             padding: const EdgeInsets.all(20),

@@ -3,6 +3,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:resq/common_file.dart';
 import 'package:resq/pages/announcements.dart';
+import 'package:resq/pages/faq.dart';
+import 'package:resq/pages/faqPage.dart';
+import 'package:resq/pages/guidePage.dart';
 import 'package:resq/pages/login_page.dart';
 import './pages/homepage.dart';
 import './pages/weathermap.dart';
@@ -51,8 +54,11 @@ class MyApp extends StatelessWidget {
         WeatherMap.routeName: (context) => WeatherMap(),
         LoginPage.routeName: (context) => LoginPage(),
         RegisterPage.routeName: (context) => RegisterPage(),
+        FAQPage.routeName:(context)=>FAQPage(),
+        GuidePage.routeName:(context)=>GuidePage(),
         Announcement.routeName: (context) => ChangeNotifierProvider(
             create: (context) => Post(), child: Announcement()),
+          
       },
     );
   }

@@ -183,7 +183,7 @@ class _NewDropDownState extends State<NewDropDown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
-      hint: Text("Select Need/ആവശ്യം"),
+      hint: Text("Select Item/വസ്തു"),
       value: _selectedValue,
       items: widget.dropDownItems
           .map((e) => DropdownMenuItem(

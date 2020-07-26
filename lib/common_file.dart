@@ -40,13 +40,23 @@ class LoggedUser with ChangeNotifier {
     }
   }
 
+  logout(BuildContext ctx) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove("token");
+      prefs.remove("phone");
+      Navigator.of(ctx).pushReplacementNamed('/');
+
+
+  }
+
   getLocation() async {
     location = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     print(location);
+    return location;
   }
 
-  register(String phone, String pass, String name, BuildContext ctx) async {
+  register(String phone, String pass, String name, BuildContext ctx,Position location) async {
     print("entered register $name");
     Map<String, String> headers = {"Content-type": "application/json"};
     var url = 'http://kresq.herokuapp.com/resq/userprofile/';
