@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
               },
               future: user.isLoggedin(),
             ),
-        WeatherMap.routeName: (context) => WeatherMap(),
+        WebPage.routeName: (context) => WebPage(),
         LoginPage.routeName: (context) => LoginPage(),
         RegisterPage.routeName: (context) => RegisterPage(),
         FAQPage.routeName:(context)=>FAQPage(),

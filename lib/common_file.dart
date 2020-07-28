@@ -6,11 +6,16 @@ import 'package:resq/pages/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoggedUser with ChangeNotifier {
+  String id;
   String name;
   String phone;
   String password;
   Position location;
   bool isVolunteer;
+  String district;
+  String place;
+  String address;
+  String areaOfVolunteer;
 
   isLoggedin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -21,7 +26,7 @@ class LoggedUser with ChangeNotifier {
     return true;
   }
 
-  login(BuildContext ctx) async {
+  login(BuildContext ctx, String phone, String password) async {
     print("Entered login()");
     var url = 'http://kresq.herokuapp.com/resq/login/';
     Map map = {"username": phone, "password": password};
@@ -41,12 +46,10 @@ class LoggedUser with ChangeNotifier {
   }
 
   logout(BuildContext ctx) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.remove("token");
-      prefs.remove("phone");
-      Navigator.of(ctx).pushReplacementNamed('/');
-
-
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("token");
+    prefs.remove("phone");
+    Navigator.of(ctx).pushReplacementNamed('/');
   }
 
   getLocation() async {
@@ -56,7 +59,8 @@ class LoggedUser with ChangeNotifier {
     return location;
   }
 
-  register(String phone, String pass, String name, BuildContext ctx,Position location) async {
+  register(String phone, String pass, String name, BuildContext ctx,
+      Position location) async {
     print("entered register $name");
     Map<String, String> headers = {"Content-type": "application/json"};
     var url = 'http://kresq.herokuapp.com/resq/userprofile/';
@@ -73,7 +77,34 @@ class LoggedUser with ChangeNotifier {
     print("response got as ${response.body}");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('phone', phone);
-    login(ctx);
+    login(ctx, phone, pass);
+  }
+
+  makeVolunteer(LoggedUser user) async {
+    String url = 'http://kresq.herokuapp.com/resq/userprofile/${user.id}/';
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String token = prefs.getString('token');
+    Map map = {
+      'is_volunteer': "True",
+      'district': user.district,
+      'areaofvol': user.areaOfVolunteer,
+      'address': user.address
+    };
+    var data = json.encode(map);
+    Response response = await patch(url,
+        headers: {
+          'Authorization': 'Token $token',
+          "Content-type": "application/json"
+        },
+        body: data);
+    print(response.body);
+  }
+
+  getProfile(LoggedUser user) async {
+    String url = 'http://kresq.herokuapp.com/resq/userprofile/${user.id}/';
+    Response response = await get(url);
+    print(response.body);
+    return response;
   }
 }
 
@@ -108,15 +139,68 @@ class Post with ChangeNotifier {
       @required this.phone,
       this.location});
 
+  getMyPosts(LoggedUser user) async {
+    String url =
+        'http://kresq.herokuapp.com//resq/userpost/?userprofile=${user.id}';
+    Response response = await get(url);
+    print(response.body);
+    return response;
+  }
+
   makePost(Post p) async {
     const url = 'http://kresq.herokuapp.com/resq/userpost/';
+    String isRequest = "no";
+    String isDonate = "no";
+    String isAnnouncement = "no";
+
+    String isFoodWater = "no";
+    String isOther = "no";
+    String isToiletries = "no";
+    String isRescue = "no";
+    switch (p.genre) {
+      case "food":
+        isFoodWater = "yes";
+        break;
+      case "water":
+        isFoodWater = "yes";
+        break;
+      case "toiletries":
+        isToiletries = "yes";
+        break;
+      case "rescue":
+        isRescue = "yes";
+        break;
+      case "others":
+        isOther = "yes";
+        break;
+      default:
+    }
+    switch (p.category) {
+      case "request":
+        isRequest = "yes";
+        break;
+      case "donate":
+        isDonate = "yes";
+        break;
+      case "announcement":
+        isAnnouncement = "yes";
+        break;
+      default:
+    }
     Map map = {
       "heading": p.heading,
       "content": p.description,
       "contactphn": p.phone,
-      "i": p.category,
+      //"i": p.category,
       "lat": p.position.latitude.toStringAsFixed(5),
-      "lon": p.position.longitude.toStringAsFixed(5)
+      "lon": p.position.longitude.toStringAsFixed(5),
+      "isAnnouncement": isAnnouncement,
+      "isRequest": isRequest,
+      "isDonate": isDonate,
+      "isToiletries": isToiletries,
+      "isRescue": isRescue,
+      "isFoodWater": isFoodWater,
+      "isOther": isOther
     };
     var data = json.encode(map);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -165,9 +249,10 @@ class Post with ChangeNotifier {
     return getPosts('http://kresq.herokuapp.com/resq/userpost/');
   }
 
-  getAnnouncements(){
+  getAnnouncements() {
     print("Entered _getAnnouncements()");
-    return getPosts('http://kresq.herokuapp.com/resq/userpost/?isAnnouncement=True');
+    return getPosts(
+        'http://kresq.herokuapp.com/resq/userpost/?isAnnouncement=True');
   }
 
   loadmore(String next) {
@@ -182,9 +267,9 @@ class Post with ChangeNotifier {
     Response response = await get(url);
     int statuscode = response.statusCode;
     //String response_body = response.body;
-    //print(statuscode);
-    //print(response);
-    //print(response_body);
+    print(statuscode);
+    print(response);
+    print(response.body);
     return response;
   }
 }

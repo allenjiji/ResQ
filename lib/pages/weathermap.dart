@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WeatherMap extends StatefulWidget {
+class WebPage extends StatefulWidget {
   static const routeName = '/weathermap';
+
   @override
-  _WeatherMapState createState() => _WeatherMapState();
+  _WebPageState createState() => _WebPageState();
 }
 
-class _WeatherMapState extends State<WeatherMap> {
+class _WebPageState extends State<WebPage> {
   WebViewController _controller;
   @override
   Widget build(BuildContext context) {
+    final routeArgs =
+        ModalRoute.of(context).settings.arguments as Map<String, String>;
+    final title = routeArgs['title'];
+    final url = routeArgs['url'];
     return Scaffold(
       appBar: AppBar(
-        title: Text("Weather Map"),
+        title: Text(title),
       ),
       body: WebView(
-        
-        initialUrl: 'https://www.windy.com/',
+        javascriptMode: JavascriptMode.unrestricted,
+        initialUrl: url,
         onWebViewCreated: (WebViewController webViewController) {
           _controller = webViewController;
         },

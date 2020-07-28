@@ -88,7 +88,10 @@ class _FeedBoxState extends State<FeedBox> {
               padding: EdgeInsets.only(left: 10, top: 10),
               child: Column(
                 children: <Widget>[
-                  Text(widget.p.heading),
+                  Text(
+                    widget.p.heading,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Text(
                     widget.p.description,
                     textAlign: TextAlign.left,
@@ -140,21 +143,29 @@ class _FeedBoxState extends State<FeedBox> {
                                 children: <Widget>[
                                   ListTile(
                                     title: Text("Location"),
+                                    onTap: () async {
+                                      String url =
+                                          'https://www.google.com/maps/search/?api=1&query=${widget.p.position.latitude},${widget.p.position.longitude}';
+                                          if(await canLaunch(url)){
+                                            await launch(url);
+                                          }
+                                          else throw 'Couldnot Open Googlemap';
+                                    },
                                   ),
                                   InkWell(
                                     child: ListTile(
-                                      title: Text(
-                                        "Phone",
-                                      ),
-                                    ),
-                                    onTap: () => () async {
-                                      String url = "tel:" + widget.p.phone;
-                                      if (await canLaunch(url)) {
-                                        await launch(url);
-                                      } else {
-                                        throw 'Could not launch $url';
-                                      }
-                                    },
+                                        title: Text(
+                                          "Phone",
+                                        ),
+                                        onTap: () async {
+                                          print(widget.p.phone);
+                                          String url = "tel:${widget.p.phone}";
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        }),
                                   ),
                                 ],
                               ),
@@ -193,8 +204,8 @@ class _NewDropDownState extends State<NewDropDown> {
           .toList(),
       onChanged: (value) {
         print("selected $value from dropdown");
-        widget.postObject.category = value;
-        widget.postObject.genre = 'request';
+        widget.postObject.genre = value;
+        widget.postObject.category = 'request';
         setState(() {
           _selectedValue = "$value";
         });
@@ -229,7 +240,7 @@ class _NewDropDown2State extends State<NewDropDown2> {
           .toList(),
       onChanged: (value) {
         print("selected $value from dropdown");
-        widget.postObject.genre = value;
+        widget.postObject.category = value;
         setState(() {
           _selectedValue = "$value";
         });

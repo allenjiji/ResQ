@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:resq/main.dart';
+import 'package:resq/pages/login_page.dart';
 
 import '../common_file.dart';
 
@@ -126,6 +127,15 @@ class _RegisterPageState extends State<RegisterPage> {
                 registerButon,
                 SizedBox(
                   height: h / 50,
+                ),
+                InkWell(
+                  child: Center(
+                    child: Text(
+                      "Alredy a user? Login",
+                    ),
+                  ),
+                  onTap: () => Navigator.of(context)
+                      .pushReplacementNamed(LoginPage.routeName),
                 ),
                 Container(
                     child: isloading

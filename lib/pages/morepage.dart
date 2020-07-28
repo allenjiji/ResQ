@@ -27,7 +27,6 @@ class More extends StatefulWidget {
  */
 class _MoreState extends State<More> {
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  List<Color> colors = [Colors.blue];
 
   List<List<String>> dropdownItems = [
     ["Rescue/രക്ഷാപ്രവർത്തനം", "rescue"],
@@ -50,7 +49,7 @@ class _MoreState extends State<More> {
     ["Guide", "നിർദ്ദേശങ്ങൾ", Icons.message],
     ["My Profile", "പ്രൊഫൈൽ", Icons.portrait],
     ["My Posts", "പോസ്റ്റുകൾ", Icons.photo_size_select_large],
-    ["logout",'',Icons.local_florist]
+    ["logout", '', Icons.local_florist]
   ];
   List<String> textFieldTexts = [
     "Name/പേര് ",
@@ -114,6 +113,7 @@ class _MoreState extends State<More> {
             Position position = await Geolocator()
                 .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
             p.position = position;
+            p.category = "request";
             if (formKey.currentState.validate()) {
               formKey.currentState.save();
               print("Saved");
@@ -173,12 +173,65 @@ class _MoreState extends State<More> {
             Position position = await Geolocator()
                 .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
             p.position = position;
-            //p.
+            p.category = "donate";
             if (formKey.currentState.validate()) {
               formKey.currentState.save();
               print("Saved");
               print("${p.genre}");
               _post.makePost(p);
+            }
+          },
+          child: Text("Donate to Public"),
+        ),
+      ),
+      ButtonTheme(
+        minWidth: double.infinity,
+        //height:,
+        child: FlatButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(WebPage.routeName, arguments: {
+              "title": "Donate to CM",
+              "url": "https://donation.cmdrf.kerala.gov.in/#donation"
+            });
+          },
+          child: Text("I want to donate to CM's Fund"),
+        ),
+      ),
+    ];
+    List<Widget> bottonSheetItemsVolunteer = [
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration:
+            InputDecoration(hintText: "Place/സ്ഥലം", labelText: "Place/സ്ഥലം"),
+        onSaved: (newValue) => user.place = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            hintText: "District/ജില്ല", labelText: "District/ജില്ല"),
+        onSaved: (newValue) => user.district = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            hintText: "Medical/Survey etc...",
+            labelText: "Area of Volunteering/മേഖല"),
+        onSaved: (newValue) => user.areaOfVolunteer = newValue,
+      ),
+      ButtonTheme(
+        minWidth: double.infinity,
+        //height:,
+        child: FlatButton(
+          onPressed: () async {
+            Position position = await Geolocator()
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+            user.location = position;
+
+            if (formKey.currentState.validate()) {
+              formKey.currentState.save();
+              print("Saved");
+              //print("${p.genre}");
+              user.makeVolunteer(user);
             }
           },
           child: Text("SUBMIT"),
@@ -188,7 +241,7 @@ class _MoreState extends State<More> {
     var h = MediaQuery.of(context).size.height;
     return Container(
       //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-      color: Colors.grey[400],
+      color: Colors.white,
       child: GridView.count(
         crossAxisCount: 2,
         //padding: EdgeInsets.all(h / 30),
@@ -215,7 +268,11 @@ class _MoreState extends State<More> {
 
                   break;
                 case 1:
-                  Navigator.of(context).pushNamed(WeatherMap.routeName);
+                  Navigator.of(context).pushNamed(WebPage.routeName,
+                      arguments: {
+                        'title': "Weather Map",
+                        "url": "https://www.windy.com/"
+                      });
                   break;
                 case 2:
                   Navigator.of(context).pushNamed(Announcement.routeName);
@@ -235,13 +292,29 @@ class _MoreState extends State<More> {
                         );
                       });
                   break;
+                case 4:
+                  showModalBottomSheet(
+                      enableDrag: true,
+                      //isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(h / 40))),
+                      context: context,
+                      builder: (_) {
+                        return BottomContainerForm(
+                          formKey: formKey,
+                          items: bottonSheetItemsVolunteer,
+                        );
+                      });
+                  break;
                 case 5:
                   Navigator.of(context).pushNamed(FAQPage.routeName);
                   break;
                 case 6:
                   Navigator.of(context).pushNamed(GuidePage.routeName);
                   break;
-                  case 9: user.logout(context);
+                case 9:
+                  user.logout(context);
                   break;
                 default:
               }
@@ -261,6 +334,7 @@ class _MoreState extends State<More> {
                     Icon(
                       texts[index][2],
                       size: h / 15,
+                      color: Colors.red,
                     ),
                     //Text('\n'),
                     Text(

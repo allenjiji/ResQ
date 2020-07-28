@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -5,7 +6,6 @@ import 'package:resq/bottom_sheet.dart';
 import '../common_file.dart';
 import '../custom_widgets.dart';
 import 'package:http/http.dart';
-import 'dart:convert';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class Feed extends StatefulWidget {
@@ -26,24 +26,18 @@ List<List<String>> dropdownItems = [
 List<List<String>> dropdownItems2 = [
   ["Request/അഭ്യർത്ഥന", "request"],
   ["Announcement/അറിയിപ്പുകൾ", "announcement"],
-  ["Donate/ദാനം", "supply"],
+  ["Donate/ദാനം", "donate"],
 ];
 
 class _FeedState extends State<Feed> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Post p = new Post();
 
-  String next;
-  String prev;
-  
-
   String _genreDecider(bool isRequest, bool isDonate, bool isAnnouncement) {
     if (isRequest) return "request";
     if (isAnnouncement) return "announcemment";
     if (isDonate) return "supply";
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +98,7 @@ class _FeedState extends State<Feed> {
             if (formKey.currentState.validate()) {
               formKey.currentState.save();
               print("Saved");
-              print("${p.genre}");
+              print("${p.category}");
               _post.makePost(p);
             }
           },
@@ -159,40 +153,50 @@ class _FeedState extends State<Feed> {
                         return Center(child: Text("No Feeds"));
                       }
                       return LazyLoadScrollView(
-                        onEndOfPage: () => _post.loadmore(next),
+                        onEndOfPage: () async {
+                          Response response =
+                              await _post.loadmore(data["next"]);
+                          var data2 = json.decode(response.body);
+                          print("new printing $data2");
+                          setState(() {
+                            data = data2;
+                          });
+                        },
                         child: ListView.builder(
                           itemCount: data['results'].length,
                           itemBuilder: (context, index) {
                             Post p = new Post(
-                              description: data['results'][index]["content"],
-                              heading: data['results'][index]["heading"],
-                              genre: _genreDecider(
-                                  data['results'][index]["isRequest"],
-                                  data['results'][index]["isDonate"],
-                                  data['results'][index]["isAnnouncement"]),
-                              isVoted: data['results'][index]["upvotes"]
-                                      .contains("Anandhan")
-                                  ? true
-                                  : false,
-                              phone: data['results'][index]["contactphn"],
-                              image: data['results'][index]["image"] == null
-                                  ? "https://raw.githubusercontent.com/allenjiji/ResQ/front-end/lib/08_color.png?token=ALNRNEZXEUK4AIA42FAXKMS7DKV6M"
-                                  : data['results'][index]["image"],
-                              postId: data['results'][index]["id"],
-                              votes: data['results'][index]["upvotes"].length,
-                              name: data['results'][index]["userprofile"]
-                                  .toString()
-                                  .toString(),
-                            );
+                                description: data['results'][index]["content"],
+                                heading: data['results'][index]["heading"],
+                                genre: _genreDecider(
+                                    data['results'][index]["isRequest"],
+                                    data['results'][index]["isDonate"],
+                                    data['results'][index]["isAnnouncement"]),
+                                isVoted: data['results'][index]["upvotes"]
+                                        .contains("Anandhan")
+                                    ? true
+                                    : false,
+                                phone: data['results'][index]["contactphn"],
+                                position: Position(
+                                    latitude: double.parse(
+                                        data['results'][index]["lat"]),
+                                    longitude: double.parse(
+                                        data['results'][index]["lon"])),
+                                image: data['results'][index]["image"] == null
+                                    ? ""
+                                    : data['results'][index]["image"],
+                                postId: data['results'][index]["id"],
+                                votes: data['results'][index]["upvotes"].length,
+                                name: data['results'][index]["userprofile"]
+                                    .toString());
                             return FeedBox(
                               p: p,
                             );
                           },
                         ),
                       );
-                    }
-                    else{
-                       return Center(child: Text("No Internet Connection"));
+                    } else {
+                      return Center(child: Text("No Internet Connection"));
                     }
                   }
                   break;
@@ -200,9 +204,8 @@ class _FeedState extends State<Feed> {
                   return Center(child: Text("None"));
                   break;
                 default:
-                  return Center(child: Text("Default retirn by switch"));
+                  return Center(child: Text("Default return by switch"));
               }
-              return Container();
             },
           )),
         ],

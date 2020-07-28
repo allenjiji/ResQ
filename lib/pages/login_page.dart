@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:resq/common_file.dart';
+import 'package:resq/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
@@ -7,17 +9,18 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final phoneConroller = TextEditingController();
+  final phoneController = TextEditingController();
   final passController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    bool isloading = false;
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
     final phoneField = TextField(
       keyboardType: TextInputType.number,
       //style: style,
-      controller: phoneConroller,
+      controller: phoneController,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Phone/ഫോൺ",
@@ -42,8 +45,15 @@ class _LoginPageState extends State<LoginPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          print(phoneConroller.text);
+          print(phoneController.text);
           print(passController.text);
+          if (phoneController.text != '' && passController.text != '') {
+            setState(() {
+              isloading = true;
+            });
+          }
+          LoggedUser()
+              .login(context, phoneController.text, passController.text);
         },
         child: Text("LOGIN",
             textAlign: TextAlign.center,
@@ -79,6 +89,21 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: h / 50,
                 ),
+                InkWell(
+                  child: Center(
+                    child: Text(
+                      "New User ? Register",
+                    ),
+                  ),
+                  onTap: () => Navigator.of(context)
+                      .pushReplacementNamed(RegisterPage.routeName),
+                ),
+                Container(
+                    child: isloading
+                        ? CircularProgressIndicator(
+                            backgroundColor: Colors.red,
+                          )
+                        : Container())
               ],
             ),
           ),
