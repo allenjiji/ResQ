@@ -40,6 +40,7 @@ class LoggedUser with ChangeNotifier {
     print("Checking");
     final String token = prefs.getString('token');
     print(token);
+    prefs.setString('phone', phone);
     if (token != null) {
       Navigator.of(ctx).pushReplacementNamed('/');
     }
@@ -101,10 +102,27 @@ class LoggedUser with ChangeNotifier {
   }
 
   getProfile(LoggedUser user) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String phone = prefs.getString('phone');
     String url = 'http://kresq.herokuapp.com/resq/userprofile/${user.id}/';
     Response response = await get(url);
     print(response.body);
     return response;
+  }
+
+  getUserid(LoggedUser user) async {
+    String url =
+        'http://kresq.herokuapp.com/resq/userprofile/?phone=${user.phone}';
+    Response response = await get(url);
+    print(response.body);
+    return response;
+  }
+
+  getSavedUserPhone() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String token = prefs.getString('token');
+    final String phone = prefs.getString('phone');
+    return phone;
   }
 }
 
@@ -123,6 +141,7 @@ class Post with ChangeNotifier {
   String district;
   bool isVoted;
   int votes;
+  String userProfile;
   Post(
       {@required this.postId,
       @required this.position,
@@ -139,9 +158,14 @@ class Post with ChangeNotifier {
       @required this.phone,
       this.location});
 
-  getMyPosts(LoggedUser user) async {
-    String url =
-        'http://kresq.herokuapp.com//resq/userpost/?userprofile=${user.id}';
+  getMyPosts() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String phone = prefs.getString('phone');
+    String url1 = 'http://kresq.herokuapp.com/resq/userprofile/?phone=$phone';
+    Response response1 = await get(url1);
+    //print(json.decode(response1.body)[0]["id"]);
+    var id = json.decode(response1.body)[0]["id"];
+    String url = 'http://kresq.herokuapp.com/resq/userpost/?userprofile=18';
     Response response = await get(url);
     print(response.body);
     return response;
@@ -244,6 +268,17 @@ class Post with ChangeNotifier {
     print("unlike --> $statusCode");
   }
 
+  deletepost(String id) async {
+    String id;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String token = prefs.getString('token');
+    String url = 'http://kresq.herokuapp.com/resq/userpost/$id';
+    Response response = await delete(url, headers: {
+      'Authorization': 'Token $token',
+      "Content-type": "application/json"
+    });
+  }
+
   getFirstPosts() {
     print("Entered _getFirstPosts()");
     return getPosts('http://kresq.herokuapp.com/resq/userpost/');
@@ -260,7 +295,7 @@ class Post with ChangeNotifier {
     return getPosts(next);
   }
 
-  //makePost() async {}
+//makePost() async {}
 
   getPosts(String url) async {
     print("Entered getpost()");

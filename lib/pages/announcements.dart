@@ -9,6 +9,7 @@ import '../custom_widgets.dart';
 
 class Announcement extends StatelessWidget {
   static const routeName = '/announcemnt';
+  String next;
   @override
   Widget build(BuildContext context) {
     Post postObject = Provider.of<Post>(context, listen: false);
@@ -34,8 +35,9 @@ class Announcement extends StatelessWidget {
                   if (data["results"].length == 0) {
                     return Center(child: Text("No Feeds"));
                   }
+                  next=data["next"];
                   return LazyLoadScrollView(
-                    onEndOfPage: () => postObject.loadmore('sds'),
+                    onEndOfPage: () => postObject.loadmore(next),
                     child: ListView.builder(
                       itemCount: data['results'].length,
                       itemBuilder: (context, index) {
@@ -43,19 +45,19 @@ class Announcement extends StatelessWidget {
                           description: data['results'][index]["content"],
                           heading: data['results'][index]["heading"],
                           genre: "announcement",
+                          //category: "announcement",
                           isVoted: data['results'][index]["upvotes"]
                                   .contains("Anandhan")
                               ? true
                               : false,
                           phone: data['results'][index]["contactphn"],
                           image: data['results'][index]["image"] == null
-                              ? "https://raw.githubusercontent.com/allenjiji/ResQ/front-end/lib/08_color.png?token=ALNRNEZXEUK4AIA42FAXKMS7DKV6M"
+                              ? ''
                               : data['results'][index]["image"],
                           postId: data['results'][index]["id"],
                           votes: data['results'][index]["upvotes"].length,
-                          name: data['results'][index]["userprofile"]
-                              .toString()
-                              .toString(),
+                          name:
+                              data['results'][index]["userprofile"].toString(),
                         );
                         return FeedBox(
                           p: p,
