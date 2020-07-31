@@ -32,10 +32,7 @@ List<List<String>> dropdownItems2 = [
 class _FeedState extends State<Feed> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Post p = new Post();
-<<<<<<< HEAD
-=======
   String next = 'http://kresq.herokuapp.com/resq/userpost/';
->>>>>>> parent of 125fdcc... all pages completed and mypostpage and delete post option  need to be improved
 
   String _genreDecider(bool isRequest, bool isDonate, bool isAnnouncement) {
     if (isRequest) return "request";
@@ -136,11 +133,7 @@ class _FeedState extends State<Feed> {
           ),
           Expanded(
               child: FutureBuilder(
-<<<<<<< HEAD
-            future: _post.getFirstPosts(),
-=======
             future: _post.loadmore(next),
->>>>>>> parent of 125fdcc... all pages completed and mypostpage and delete post option  need to be improved
             builder: (context, snapshot) {
               print(snapshot.connectionState);
               switch (snapshot.connectionState) {
@@ -160,28 +153,18 @@ class _FeedState extends State<Feed> {
                       if (data["results"].length == 0) {
                         return Center(child: Text("No Feeds"));
                       }
-<<<<<<< HEAD
-                      return LazyLoadScrollView(
-                        onEndOfPage: () async {
-                          Response response =
-=======
                       next = data["next"];
                       return LazyLoadScrollView(
                         onEndOfPage: () {
                           setState(() {});
 
                           /* Response response =
->>>>>>> parent of 125fdcc... all pages completed and mypostpage and delete post option  need to be improved
                               await _post.loadmore(data["next"]);
                           var data2 = json.decode(response.body);
                           print("new printing $data2");
                           setState(() {
                             data = data2;
-<<<<<<< HEAD
-                          });
-=======
                           }); */
->>>>>>> parent of 125fdcc... all pages completed and mypostpage and delete post option  need to be improved
                         },
                         child: ListView.builder(
                           itemCount: data['results'].length,
