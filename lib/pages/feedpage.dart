@@ -32,11 +32,14 @@ List<List<String>> dropdownItems2 = [
 class _FeedState extends State<Feed> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Post p = new Post();
-  String next = 'http://kresq.herokuapp.com/resq/userpost/';
+  String next = 'http://kresq.herokuapp.com/resq/userpost/?ordering=-creationtime';
+  bool hadData = true;
+  bool isloading = false;
+  List posts;
 
   String _genreDecider(bool isRequest, bool isDonate, bool isAnnouncement) {
     if (isRequest) return "request";
-    if (isAnnouncement) return "announcemment";
+    if (isAnnouncement) return "announcement";
     if (isDonate) return "supply";
   }
 
@@ -133,7 +136,7 @@ class _FeedState extends State<Feed> {
           ),
           Expanded(
               child: FutureBuilder(
-            future: _post.loadmore(next),
+            future: _post.getPosts(next),
             builder: (context, snapshot) {
               print(snapshot.connectionState);
               switch (snapshot.connectionState) {
@@ -154,45 +157,45 @@ class _FeedState extends State<Feed> {
                         return Center(child: Text("No Feeds"));
                       }
                       next = data["next"];
+                      posts == null
+                          ? posts = data["results"]
+                          : posts.addAll(data["results"]);
+                      //posts = data["results"];
                       return LazyLoadScrollView(
                         onEndOfPage: () {
-                          setState(() {});
-
-                          /* Response response =
-                              await _post.loadmore(data["next"]);
-                          var data2 = json.decode(response.body);
-                          print("new printing $data2");
-                          setState(() {
-                            data = data2;
-                          }); */
+                          if (next != null) setState(() {});
                         },
                         child: ListView.builder(
-                          itemCount: data['results'].length,
+                          itemCount: (posts.length),
                           itemBuilder: (context, index) {
+                            if (index >= posts.length && isloading) {
+                              return Center(
+                                  child: CircularProgressIndicator(
+                                backgroundColor: Colors.black,
+                              ));
+                            }
                             Post p = new Post(
-                                description: data['results'][index]["content"],
-                                heading: data['results'][index]["heading"],
+                                description: posts[index]["content"],
+                                heading: posts[index]["heading"],
                                 genre: _genreDecider(
-                                    data['results'][index]["isRequest"],
-                                    data['results'][index]["isDonate"],
-                                    data['results'][index]["isAnnouncement"]),
-                                isVoted: data['results'][index]["upvotes"]
-                                        .contains("Anandhan")
-                                    ? true
-                                    : false,
-                                phone: data['results'][index]["contactphn"],
+                                    posts[index]["isRequest"],
+                                    posts[index]["isDonate"],
+                                    posts[index]["isAnnouncement"]),
+                                isVoted:
+                                    posts[index]["upvotes"].contains("Anandhan")
+                                        ? true
+                                        : false,
+                                phone: posts[index]["contactphn"],
                                 position: Position(
-                                    latitude: double.parse(
-                                        data['results'][index]["lat"]),
-                                    longitude: double.parse(
-                                        data['results'][index]["lon"])),
-                                image: data['results'][index]["image"] == null
+                                    latitude: double.parse(posts[index]["lat"]),
+                                    longitude:
+                                        double.parse(posts[index]["lon"])),
+                                image: posts[index]["image"] == null
                                     ? ""
-                                    : data['results'][index]["image"],
-                                postId: data['results'][index]["id"],
-                                votes: data['results'][index]["upvotes"].length,
-                                name: data['results'][index]["userprofile"]
-                                    .toString());
+                                    : posts[index]["image"],
+                                postId: posts[index]["id"],
+                                votes: posts[index]["upvotes"].length,
+                                name: posts[index]["userprofile"].toString());
                             return FeedBox(
                               p: p,
                             );

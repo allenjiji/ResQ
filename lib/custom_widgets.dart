@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'common_file.dart';
@@ -35,8 +39,22 @@ class FeedBox extends StatefulWidget {
 }
 
 class _FeedBoxState extends State<FeedBox> {
+  String currentUser;
+  getCurrentUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String phone = prefs.getString('phone');
+    String url = 'http://kresq.herokuapp.com/resq/userprofile/?phone=$phone';
+    Response response = await get(url);
+    print(json.decode(response.body));
+    var body = json.decode(response.body);
+    currentUser = body["id"];
+    print(currentUser);
+  }
+
+  Post _post = Post();
   @override
   Widget build(BuildContext context) {
+    getCurrentUser();
     return Container(
       child: Column(
         children: <Widget>[
@@ -58,6 +76,13 @@ class _FeedBoxState extends State<FeedBox> {
                       itemBuilder: (context) => [
                             PopupMenuItem(
                               child: Text("Report"),
+                            ),
+                            PopupMenuItem(
+                              enabled: widget.p.userProfile == currentUser,
+                              child: InkWell(
+                                  onTap: () => _post
+                                    .deletepost(widget.p.postId.toString()),
+                                  child: Text("Remove")),
                             ),
                           ])
                   /* InkWell(
@@ -146,10 +171,10 @@ class _FeedBoxState extends State<FeedBox> {
                                     onTap: () async {
                                       String url =
                                           'https://www.google.com/maps/search/?api=1&query=${widget.p.position.latitude},${widget.p.position.longitude}';
-                                          if(await canLaunch(url)){
-                                            await launch(url);
-                                          }
-                                          else throw 'Couldnot Open Googlemap';
+                                      if (await canLaunch(url)) {
+                                        await launch(url);
+                                      } else
+                                        throw 'Couldnot Open Googlemap';
                                     },
                                   ),
                                   InkWell(
@@ -244,9 +269,6 @@ class _NewDropDown2State extends State<NewDropDown2> {
         setState(() {
           _selectedValue = "$value";
         });
-      },
-      onTap: () {
-        setState(() {});
       },
     );
   }

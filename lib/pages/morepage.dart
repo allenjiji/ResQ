@@ -4,9 +4,11 @@ import 'package:resq/common_file.dart';
 import 'package:flutter/material.dart';
 import 'package:resq/bottom_sheet.dart';
 import 'package:resq/custom_widgets.dart';
+import 'package:resq/myprofile.dart';
 import 'package:resq/pages/announcements.dart';
 import 'package:resq/pages/faqPage.dart';
 import 'package:resq/pages/guidePage.dart';
+import 'package:resq/pages/myposts.dart';
 import 'dart:math' as math;
 
 import './weathermap.dart';
@@ -312,6 +314,13 @@ class _MoreState extends State<More> {
                   break;
                 case 6:
                   Navigator.of(context).pushNamed(GuidePage.routeName);
+                  break;
+                case 7:
+                  Navigator.of(context).pushNamed(Profile.routeName);
+                  break;
+                  case 8:
+                  Navigator.of(context).pushNamed(MyPosts.routeName);
+                  
                   break;
                 case 9:
                   user.logout(context);
