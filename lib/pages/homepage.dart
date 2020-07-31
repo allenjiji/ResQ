@@ -5,6 +5,7 @@ import 'mapspage.dart';
 import 'contactspage.dart';
 
 class MyHomePage extends StatefulWidget {
+  static const routeName = '/home';
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -16,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
       length: 4,
       child: SafeArea(
         child: Scaffold(
-          /* appBar: AppBar(
+          appBar: AppBar(
             title: Text(
               "RESQ",
               style: TextStyle(
@@ -27,29 +28,32 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             //titleSpacing: 50.0,
             //centerTitle: true,
-            backgroundColor: Colors.white,
-          ), */
+            backgroundColor: Colors.white, elevation: 0,
+          ),
           body: TabBarView(children: [
             Feed(),
             More(),
             Maps(),
             Contacts(),
           ]),
-          bottomNavigationBar: TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.featured_play_list), text: "Feed"),
-              Tab(icon: Icon(Icons.apps), text: "More"),
-              Tab(
-                icon: Icon(Icons.location_on),
-                text: "Maps",
-              ),
-              Tab(icon: Icon(Icons.phone), text: "Contacts")
-            ],
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorPadding: EdgeInsets.all(5.0),
-            indicatorColor: Colors.black,
+          bottomNavigationBar: Container(
+            //color: Colors.grey,
+            child: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.featured_play_list), text: "Feed"),
+                Tab(icon: Icon(Icons.apps), text: "More"),
+                Tab(
+                  icon: Icon(Icons.location_on),
+                  text: "Maps",
+                ),
+                Tab(icon: Icon(Icons.phone), text: "Contacts")
+              ],
+              labelColor: Colors.red,
+              unselectedLabelColor: Colors.grey,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorPadding: EdgeInsets.all(5.0),
+              indicatorColor: Colors.red,
+            ),
           ),
         ),
       ),
