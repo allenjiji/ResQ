@@ -32,7 +32,6 @@ List<List<String>> dropdownItems2 = [
 class _FeedState extends State<Feed> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Post p = new Post();
-  String next = 'http://kresq.herokuapp.com/resq/userpost/';
 
   String _genreDecider(bool isRequest, bool isDonate, bool isAnnouncement) {
     if (isRequest) return "request";
@@ -133,7 +132,7 @@ class _FeedState extends State<Feed> {
           ),
           Expanded(
               child: FutureBuilder(
-            future: _post.loadmore(next),
+            future: _post.getFirstPosts(),
             builder: (context, snapshot) {
               print(snapshot.connectionState);
               switch (snapshot.connectionState) {
@@ -153,18 +152,15 @@ class _FeedState extends State<Feed> {
                       if (data["results"].length == 0) {
                         return Center(child: Text("No Feeds"));
                       }
-                      next = data["next"];
                       return LazyLoadScrollView(
-                        onEndOfPage: () {
-                          setState(() {});
-
-                          /* Response response =
+                        onEndOfPage: () async {
+                          Response response =
                               await _post.loadmore(data["next"]);
                           var data2 = json.decode(response.body);
                           print("new printing $data2");
                           setState(() {
                             data = data2;
-                          }); */
+                          });
                         },
                         child: ListView.builder(
                           itemCount: data['results'].length,
