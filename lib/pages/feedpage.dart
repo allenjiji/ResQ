@@ -65,17 +65,7 @@ class _FeedState extends State<Feed> {
     print(currentUserId);
     final h = MediaQuery.of(context).size.height;
     List<Widget> bottonSheetItems = [
-      TextFormField(
-        keyboardType: TextInputType.text,
-        decoration:
-            InputDecoration(hintText: "Name/പേര് ", labelText: "Name/പേര് "),
-      ),
-      TextFormField(
-        keyboardType: TextInputType.number,
-        decoration:
-            InputDecoration(hintText: "Phone/ഫോൺ ", labelText: "Phone/ഫോൺ "),
-        onSaved: (newValue) => p.phone = newValue,
-      ),
+      
       TextFormField(
         keyboardType: TextInputType.text,
         decoration:
@@ -116,6 +106,9 @@ class _FeedState extends State<Feed> {
             Position position = await Geolocator()
                 .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
             p.position = position;
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            p.phone = prefs.getString("phone");
+            p.name = prefs.getString("name");
             if (formKey.currentState.validate()) {
               formKey.currentState.save();
               print("Saved");
@@ -180,7 +173,7 @@ class _FeedState extends State<Feed> {
                       //posts = data["results"];
                       return LazyLoadScrollView(
                         onEndOfPage: () {
-                          if (next != null) setState(() {});
+                         /*  if (next != null) setState(() {}); */
                         },
                         child: ListView.builder(
                           itemCount: (posts.length),
@@ -188,9 +181,11 @@ class _FeedState extends State<Feed> {
                             if (index >= posts.length && isloading) {
                               return Center(
                                   child: CircularProgressIndicator(
-                                backgroundColor: Colors.black,
+                                backgroundColor: Colors.red,
                               ));
                             }
+                            /* print(posts[index]["upvotes"]
+                                .contains(int.parse(currentUserId))); */
                             Post p = new Post(
                                 description: posts[index]["content"],
                                 heading: posts[index]["heading"],
@@ -198,10 +193,9 @@ class _FeedState extends State<Feed> {
                                     posts[index]["isRequest"],
                                     posts[index]["isDonate"],
                                     posts[index]["isAnnouncement"]),
-                                isVoted:
-                                    posts[index]["upvotes"].contains("Anandhan")
-                                        ? true
-                                        : false,
+                                isVoted: posts[index]["upvotes"]
+                                    .contains(int.parse(currentUserId)),
+                                //isVoted: false,
                                 phone: posts[index]["contactphn"],
                                 position: Position(
                                     latitude: double.parse(posts[index]["lat"]),
@@ -214,9 +208,9 @@ class _FeedState extends State<Feed> {
                                 votes: posts[index]["upvotes"].length,
                                 name: posts[index]["userprofile"].toString());
                             return FeedBox(
-                              p: p,
-                              
-                            );
+                                p: p,
+                                showremove: posts[index]["userprofile"] ==
+                                    int.parse(currentUserId));
                           },
                         ),
                       );

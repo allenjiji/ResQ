@@ -9,6 +9,7 @@ import 'package:resq/pages/announcements.dart';
 import 'package:resq/pages/faqPage.dart';
 import 'package:resq/pages/guidePage.dart';
 import 'package:resq/pages/myposts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
 
 import './weathermap.dart';
@@ -71,17 +72,6 @@ class _MoreState extends State<More> {
       TextFormField(
         keyboardType: TextInputType.text,
         decoration:
-            InputDecoration(hintText: "Name/പേര് ", labelText: "Name/പേര് "),
-      ),
-      TextFormField(
-        keyboardType: TextInputType.number,
-        decoration:
-            InputDecoration(hintText: "Phone/ഫോൺ ", labelText: "Phone/ഫോൺ "),
-        onSaved: (newValue) => p.phone = newValue,
-      ),
-      TextFormField(
-        keyboardType: TextInputType.text,
-        decoration:
             InputDecoration(hintText: "Place/സ്ഥലം", labelText: "Place/സ്ഥലം"),
         onSaved: (newValue) => p.place = newValue,
       ),
@@ -116,6 +106,9 @@ class _MoreState extends State<More> {
                 .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
             p.position = position;
             p.category = "request";
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            p.phone = prefs.getString("phone");
+            p.name = prefs.getString("name");
             if (formKey.currentState.validate()) {
               formKey.currentState.save();
               print("Saved");
@@ -128,17 +121,6 @@ class _MoreState extends State<More> {
       ),
     ];
     List<Widget> bottonSheetItemsDonate = [
-      TextFormField(
-        keyboardType: TextInputType.text,
-        decoration:
-            InputDecoration(hintText: "Name/പേര് ", labelText: "Name/പേര് "),
-      ),
-      TextFormField(
-        keyboardType: TextInputType.number,
-        decoration:
-            InputDecoration(hintText: "Phone/ഫോൺ ", labelText: "Phone/ഫോൺ "),
-        onSaved: (newValue) => p.phone = newValue,
-      ),
       TextFormField(
         keyboardType: TextInputType.text,
         decoration:
@@ -176,6 +158,9 @@ class _MoreState extends State<More> {
                 .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
             p.position = position;
             p.category = "donate";
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            p.phone = prefs.getString("phone");
+            p.name = prefs.getString("name");
             if (formKey.currentState.validate()) {
               formKey.currentState.save();
               print("Saved");
@@ -216,8 +201,7 @@ class _MoreState extends State<More> {
       TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            hintText: "House name ,Street ...",
-            labelText: "Address/വിലാസം"),
+            hintText: "House name ,Street ...", labelText: "Address/വിലാസം"),
         onSaved: (newValue) => user.address = newValue,
       ),
       TextFormField(
@@ -325,9 +309,9 @@ class _MoreState extends State<More> {
                 case 7:
                   Navigator.of(context).pushNamed(Profile.routeName);
                   break;
-                  case 8:
+                case 8:
                   Navigator.of(context).pushNamed(MyPosts.routeName);
-                  
+
                   break;
                 case 9:
                   user.logout(context);

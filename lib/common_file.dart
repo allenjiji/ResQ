@@ -36,11 +36,17 @@ class LoggedUser with ChangeNotifier {
     print("response got as ${response.body}");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var response_data = json.decode(response.body);
+
     prefs.setString('token', response_data["token"]);
     print("Checking");
     final String token = prefs.getString('token');
     print(token);
     prefs.setString('phone', phone);
+    Response res =
+        await get('http://kresq.herokuapp.com/resq/userprofile/?phone=$phone');
+    String name=json.decode(res.body)[0]["name"];
+    print("name is name is ======>$name");
+    prefs.setString('name', name);
     if (token != null) {
       Navigator.of(ctx).pushReplacementNamed('/');
     }
@@ -287,6 +293,8 @@ class Post with ChangeNotifier {
       'Authorization': 'Token $token',
       "Content-type": "application/json"
     });
+    print("from deletepost fn");
+    print(response.body);
   }
 
   getFirstPosts() {

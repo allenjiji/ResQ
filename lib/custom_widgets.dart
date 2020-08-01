@@ -8,9 +8,11 @@ import 'package:url_launcher/url_launcher.dart';
 import 'common_file.dart';
 
 class FeedBox extends StatefulWidget {
-  FeedBox({Key key, @required this.p}) : super(key: key);
+  FeedBox({Key key, @required this.p, @required this.showremove})
+      : super(key: key);
 
   final Post p;
+  final bool showremove;
 
   Color colorDecider(String genre) {
     switch (genre) {
@@ -52,6 +54,13 @@ class _FeedBoxState extends State<FeedBox> {
   }
 
   Post _post = Post();
+  getdetails(phone) async {
+    String url = 'http://kresq.herokuapp.com/resq/userprofile/?phone=$phone';
+    Response response = await get(url);
+    print(response.body);
+    return response;
+  }
+
   @override
   Widget build(BuildContext context) {
     getCurrentUser();
@@ -65,23 +74,35 @@ class _FeedBoxState extends State<FeedBox> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    widget.p.name,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
+                  FutureBuilder(
+                      future: getdetails(widget.p.phone),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          var data = json.decode(snapshot.data.body)[0];
+                          //var body = json.decode(data)[0]["name"];
+                          return Text(
+                            data["name"],
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          );
+                        }
+                        return Text("");
+                      }),
                   PopupMenuButton(
                       itemBuilder: (context) => [
                             PopupMenuItem(
                               child: Text("Report"),
                             ),
                             PopupMenuItem(
-                              enabled: widget.p.userProfile == currentUser,
+                              enabled: widget.showremove,
                               child: InkWell(
-                                  onTap: () => _post
-                                    .deletepost(widget.p.postId.toString()),
+                                  onTap: () {
+                                    print(widget.p.postId.toString());
+                                    widget.p
+                                        .deletepost(widget.p.postId.toString());
+                                  },
                                   child: Text("Remove")),
                             ),
                           ])
