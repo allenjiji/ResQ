@@ -175,7 +175,7 @@ class Post with ChangeNotifier {
     Response response1 = await get(url1);
     //print(json.decode(response1.body)[0]["id"]);
     var id = json.decode(response1.body)[0]["id"];
-    String url = 'http://kresq.herokuapp.com/resq/userpost/?userprofile=18';
+    String url = 'http://kresq.herokuapp.com/resq/userpost/?userprofile=$id';
     Response response = await get(url);
     print(response.body);
     return response;

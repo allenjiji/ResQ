@@ -47,7 +47,7 @@ class _FeedBoxState extends State<FeedBox> {
     Response response = await get(url);
     print(json.decode(response.body));
     var body = json.decode(response.body);
-    currentUser = body["id"];
+    currentUser = body[0]["id"];
     print(currentUser);
   }
 
