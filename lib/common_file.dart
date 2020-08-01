@@ -83,9 +83,15 @@ class LoggedUser with ChangeNotifier {
 
   makeVolunteer(LoggedUser user) async {
     //var res = getUserid(user);
-    getSavedUserPhone();
-    String url = 'http://kresq.herokuapp.com/resq/userprofile/${user.id}/';
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    user.phone = prefs.getString('phone');
+    print(user.phone);
+    Response res =await getUserid(user);
+    //print(json.decode(res.body)["id"]);
+    var a = (json.decode(res.body));
+    user.id=(a[0]["id"].toString());
+    String url = 'http://kresq.herokuapp.com/resq/userprofile/${user.id}/';
+
     final String token = prefs.getString('token');
     Map map = {
       'is_volunteer': "True",
@@ -124,6 +130,8 @@ class LoggedUser with ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString('token');
     final String phone = prefs.getString('phone');
+    print(phone);
+    print(token);
     return phone;
   }
 }
