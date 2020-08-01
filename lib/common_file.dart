@@ -86,10 +86,10 @@ class LoggedUser with ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     user.phone = prefs.getString('phone');
     print(user.phone);
-    Response res =await getUserid(user);
+    Response res = await getUserid(user);
     //print(json.decode(res.body)["id"]);
     var a = (json.decode(res.body));
-    user.id=(a[0]["id"].toString());
+    user.id = (a[0]["id"].toString());
     String url = 'http://kresq.herokuapp.com/resq/userprofile/${user.id}/';
 
     final String token = prefs.getString('token');
