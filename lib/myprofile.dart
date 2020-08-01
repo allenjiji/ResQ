@@ -13,7 +13,6 @@ class Profile extends StatelessWidget {
       user.phone = await user.getSavedUserPhone();
       Response response = await user.getUserid(user);
       print(user.phone);
-
       return response;
     }
 

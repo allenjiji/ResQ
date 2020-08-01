@@ -216,6 +216,13 @@ class _MoreState extends State<More> {
       TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
+            hintText: "House name ,Street ...",
+            labelText: "Address/വിലാസം"),
+        onSaved: (newValue) => user.address = newValue,
+      ),
+      TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
             hintText: "Medical/Survey etc...",
             labelText: "Area of Volunteering/മേഖല"),
         onSaved: (newValue) => user.areaOfVolunteer = newValue,

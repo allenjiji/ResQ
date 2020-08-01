@@ -82,6 +82,8 @@ class LoggedUser with ChangeNotifier {
   }
 
   makeVolunteer(LoggedUser user) async {
+    //var res = getUserid(user);
+    getSavedUserPhone();
     String url = 'http://kresq.herokuapp.com/resq/userprofile/${user.id}/';
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString('token');
