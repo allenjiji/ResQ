@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:resq/bottom_sheet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../common_file.dart';
 import '../custom_widgets.dart';
 import 'package:http/http.dart';
@@ -32,7 +33,8 @@ List<List<String>> dropdownItems2 = [
 class _FeedState extends State<Feed> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Post p = new Post();
-  String next = 'http://kresq.herokuapp.com/resq/userpost/?ordering=-creationtime';
+  String next =
+      'http://kresq.herokuapp.com/resq/userpost/?ordering=-creationtime';
   bool hadData = true;
   bool isloading = false;
   List posts;
@@ -43,9 +45,24 @@ class _FeedState extends State<Feed> {
     if (isDonate) return "supply";
   }
 
+  String currentUserId;
+
+  getCurrentUser(LoggedUser user) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String phone = prefs.getString('phone');
+    print(phone);
+    user.phone = phone;
+    Response response = await user.getUserid(user);
+    user.id = json.decode(response.body)[0]["id"].toString();
+    currentUserId = json.decode(response.body)[0]["id"].toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Post _post = Provider.of<Post>(context, listen: false);
+    final LoggedUser user = LoggedUser();
+    getCurrentUser(user);
+    print(currentUserId);
     final h = MediaQuery.of(context).size.height;
     List<Widget> bottonSheetItems = [
       TextFormField(
@@ -198,6 +215,7 @@ class _FeedState extends State<Feed> {
                                 name: posts[index]["userprofile"].toString());
                             return FeedBox(
                               p: p,
+                              
                             );
                           },
                         ),
