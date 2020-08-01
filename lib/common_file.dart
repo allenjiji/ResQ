@@ -44,7 +44,7 @@ class LoggedUser with ChangeNotifier {
     prefs.setString('phone', phone);
     Response res =
         await get('http://kresq.herokuapp.com/resq/userprofile/?phone=$phone');
-    String name=json.decode(res.body)[0]["name"];
+    String name = json.decode(res.body)[0]["name"];
     print("name is name is ======>$name");
     prefs.setString('name', name);
     if (token != null) {
@@ -56,7 +56,22 @@ class LoggedUser with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove("token");
     prefs.remove("phone");
-    Navigator.of(ctx).pushReplacementNamed('/');
+    showDialog(
+        context: ctx,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("LOGOUT"),
+            content: Text("Are you sure ?"),
+            actions: [
+              FlatButton(
+                  onPressed:()=> Navigator.of(ctx).pushReplacementNamed('/'),
+                  child: Text("YES")),
+              FlatButton(
+                  onPressed:()=> Navigator.of(ctx).pop(),
+                  child: Text("NO")),
+            ],
+          );
+        });
   }
 
   getLocation() async {
@@ -288,7 +303,7 @@ class Post with ChangeNotifier {
     String id;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString('token');
-    String url = 'http://kresq.herokuapp.com/resq/userpost/$id';
+    String url = 'http://kresq.herokuapp.com/resq/userpost/$id/';
     Response response = await delete(url, headers: {
       'Authorization': 'Token $token',
       "Content-type": "application/json"

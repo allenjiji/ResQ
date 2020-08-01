@@ -52,7 +52,7 @@ class _MoreState extends State<More> {
     ["Guide", "നിർദ്ദേശങ്ങൾ", Icons.message],
     ["My Profile", "പ്രൊഫൈൽ", Icons.portrait],
     ["My Posts", "പോസ്റ്റുകൾ", Icons.photo_size_select_large],
-    ["logout", '', Icons.local_florist]
+    ["LOGOUT", 'ലോഗൗട്ട്', Icons.exit_to_app]
   ];
   List<String> textFieldTexts = [
     "Name/പേര് ",
@@ -115,6 +115,13 @@ class _MoreState extends State<More> {
               print("${p.genre}");
               _post.makePost(p);
             }
+            Navigator.of(context).pop();
+            Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+              "POST SENT....IT WILL APPEAR ON FEED PAGE SOON.",
+              textAlign: TextAlign.center,
+            )));
+
           },
           child: Text("SUBMIT"),
         ),
@@ -167,6 +174,12 @@ class _MoreState extends State<More> {
               print("${p.genre}");
               _post.makePost(p);
             }
+            Navigator.of(context).pop();
+            Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+              "POST SENT....IT WILL APPEAR ON FEED PAGE SOON.",
+              textAlign: TextAlign.center,
+            )));
           },
           child: Text("Donate to Public"),
         ),
@@ -226,6 +239,13 @@ class _MoreState extends State<More> {
               //print("${p.genre}");
               user.makeVolunteer(user);
             }
+            Navigator.of(context).pop();
+            Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+              "You will appear as a Volunteer to others from now.",
+              textAlign: TextAlign.center,
+            )));
+
           },
           child: Text("SUBMIT"),
         ),

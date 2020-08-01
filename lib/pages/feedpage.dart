@@ -65,7 +65,6 @@ class _FeedState extends State<Feed> {
     print(currentUserId);
     final h = MediaQuery.of(context).size.height;
     List<Widget> bottonSheetItems = [
-      
       TextFormField(
         keyboardType: TextInputType.text,
         decoration:
@@ -115,6 +114,12 @@ class _FeedState extends State<Feed> {
               print("${p.category}");
               _post.makePost(p);
             }
+            Navigator.of(context).pop();
+            Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+              "POST SENT....IT WILL APPEAR ON FEED PAGE SOON.",
+              textAlign: TextAlign.center,
+            )));
           },
           child: Text("SUBMIT"),
         ),
@@ -173,7 +178,7 @@ class _FeedState extends State<Feed> {
                       //posts = data["results"];
                       return LazyLoadScrollView(
                         onEndOfPage: () {
-                         /*  if (next != null) setState(() {}); */
+                          /*  if (next != null) setState(() {}); */
                         },
                         child: ListView.builder(
                           itemCount: (posts.length),

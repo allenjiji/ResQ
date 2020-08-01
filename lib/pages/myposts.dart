@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:resq/common_file.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../custom_widgets.dart';
 
@@ -11,13 +13,27 @@ class MyPosts extends StatelessWidget {
     if (isDonate) return "supply";
   }
 
+  String currentUserId;
+  getCurrentUser(LoggedUser user) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String phone = prefs.getString('phone');
+    print(phone);
+    user.phone = phone;
+    Response response = await user.getUserid(user);
+    user.id = json.decode(response.body)[0]["id"].toString();
+    currentUserId = json.decode(response.body)[0]["id"].toString();
+  }
+
   static const routeName = '/myposts';
   Post postObject = Post();
   String next;
+
   @override
   Widget build(BuildContext context) {
     LoggedUser user = LoggedUser();
     Post post = Post();
+    getCurrentUser(user);
+    print(currentUserId);
     return Scaffold(
       appBar: AppBar(
         title: Text("My Posts"),
@@ -72,8 +88,10 @@ class MyPosts extends StatelessWidget {
                                 .toString(),
                           );
                           return FeedBox(
-                            p: p,
-                          );
+                              p: p,
+                              showremove: data['results'][index]
+                                      ["userprofile"] ==
+                                  int.parse(currentUserId));
                         },
                       ),
                     );
