@@ -100,8 +100,12 @@ class _FeedBoxState extends State<FeedBox> {
                               child: InkWell(
                                   onTap: () {
                                     print(widget.p.postId.toString());
-                                    widget.p
-                                        .deletepost(widget.p.postId.toString());
+                                    widget.p.deletepost(widget.p);
+                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                        content: Text(
+                                      "The Post will be removed Soon",
+                                      textAlign: TextAlign.center,
+                                    )));
                                   },
                                   child: Text("Remove")),
                             ),

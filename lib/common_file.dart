@@ -299,16 +299,16 @@ class Post with ChangeNotifier {
     print("unlike --> $statusCode");
   }
 
-  deletepost(String id) async {
+  deletepost(Post p) async {
     String id;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString('token');
-    String url = 'http://kresq.herokuapp.com/resq/userpost/$id/';
+    String url = 'http://kresq.herokuapp.com/resq/userpost/${p.postId}/';
     Response response = await delete(url, headers: {
       'Authorization': 'Token $token',
       "Content-type": "application/json"
     });
-    print("from deletepost fn");
+    print("from deletepost function");
     print(response.body);
   }
 
