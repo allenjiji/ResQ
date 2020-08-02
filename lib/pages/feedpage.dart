@@ -32,11 +32,13 @@ List<List<String>> dropdownItems2 = [
 
 class _FeedState extends State<Feed> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isloading = false;
 
   @override
   void initState() {
     //print("inside initState() next==>$next");
     super.initState();
+    isloading = true;
     fetch();
   }
 
@@ -164,38 +166,43 @@ class _FeedState extends State<Feed> {
                     })),
           ),
           Expanded(
-              child: LazyLoadScrollView(
-                  child: ListView.builder(
-                    itemCount: posts.length,
-                    itemBuilder: (context, index) {
-                      //return Text("${posts[index]["userprofile"]} and $index");
-                      Post p = new Post(
-                          description: posts[index]["content"],
-                          heading: posts[index]["heading"],
-                          genre: _genreDecider(
-                              posts[index]["isRequest"],
-                              posts[index]["isDonate"],
-                              posts[index]["isAnnouncement"]),
-                          isVoted:
-                              posts[index]["upvotes"].contains(int.parse(currentUserId)),
-                          //isVoted: false,
-                          phone: posts[index]["contactphn"],
-                          position: Position(
-                              latitude: double.parse(posts[index]["lat"]),
-                              longitude: double.parse(posts[index]["lon"])),
-                          image: posts[index]["image"] == null
-                              ? ""
-                              : posts[index]["image"],
-                          postId: posts[index]["id"],
-                          votes: posts[index]["upvotes"].length,
-                          name: posts[index]["userprofile"].toString());
-                      return FeedBox(
-                          p: p,
-                          showremove:
-                              posts[index]["userprofile"].toString() == currentUserId);
-                    },
-                  ),
-                  onEndOfPage: () => fetch())),
+              child: isloading
+                  ? Center(
+                      child: Text("Loading..."),
+                    )
+                  : LazyLoadScrollView(
+                      child: ListView.builder(
+                        itemCount: posts.length,
+                        itemBuilder: (context, index) {
+                          //return Text("${posts[index]["userprofile"]} and $index");
+                          Post p = new Post(
+                              description: posts[index]["content"],
+                              heading: posts[index]["heading"],
+                              genre: _genreDecider(
+                                  posts[index]["isRequest"],
+                                  posts[index]["isDonate"],
+                                  posts[index]["isAnnouncement"]),
+                              isVoted: posts[index]["upvotes"]
+                                  .contains(int.parse(currentUserId)),
+                              //isVoted: false,
+                              phone: posts[index]["contactphn"],
+                              position: Position(
+                                  latitude: double.parse(posts[index]["lat"]),
+                                  longitude: double.parse(posts[index]["lon"])),
+                              image: posts[index]["image"] == null
+                                  ? ""
+                                  : posts[index]["image"],
+                              postId: posts[index]["id"],
+                              votes: posts[index]["upvotes"].length,
+                              name: posts[index]["userprofile"].toString());
+                          return FeedBox(
+                              p: p,
+                              showremove:
+                                  posts[index]["userprofile"].toString() ==
+                                      currentUserId);
+                        },
+                      ),
+                      onEndOfPage: () => fetch())),
         ],
       ),
     );
@@ -209,6 +216,7 @@ class _FeedState extends State<Feed> {
       //print("this is new line:===>>${json.decode(response.body)["results"]}");
       setState(() {
         posts.addAll(json.decode(response.body)["results"]);
+        isloading = false;
       });
     } else {
       throw Exception('Failed to load');
