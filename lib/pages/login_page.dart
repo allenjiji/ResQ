@@ -4,13 +4,20 @@ import 'package:resq/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
+  final phoneController = TextEditingController();
+  final passController = TextEditingController();
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final phoneController = TextEditingController();
-  final passController = TextEditingController();
+  @override
+  dispose() {
+    super.dispose();
+    widget.phoneController.dispose();
+    widget.passController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isloading = false;
@@ -23,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     final phoneField = TextField(
       keyboardType: TextInputType.number,
       //style: style,
-      controller: phoneController,
+      controller: widget.phoneController,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           errorText: showerror1 ? "Enter a valid Phone Number" : null,
@@ -33,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
     );
     final passwordField = TextField(
       obscureText: true,
-      controller: passController,
+      controller: widget.passController,
       //style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -50,24 +57,24 @@ class _LoginPageState extends State<LoginPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          print(phoneController.text);
-          print(passController.text);
-          if (phoneController.text.length != 10) {
+          print(widget.phoneController.text);
+          print(widget.passController.text);
+          if (widget.phoneController.text.length != 10) {
             setState(() {
               showerror1 = true;
             });
-          }
-          if (passController.text.length < 8) {
+          } else if (widget.passController.text.length < 8) {
             setState(() {
               showerror2 = true;
             });
-          } else if (phoneController.text != '' && passController.text != '') {
+          } else if (widget.phoneController.text.isNotEmpty &&
+              widget.passController.text.isNotEmpty) {
             setState(() {
               isloading = true;
             });
           }
-          LoggedUser()
-              .login(context, phoneController.text, passController.text);
+          LoggedUser().login(
+              context, widget.phoneController.text, widget.passController.text);
         },
         child: Text("LOGIN",
             textAlign: TextAlign.center,

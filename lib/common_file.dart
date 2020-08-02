@@ -56,6 +56,8 @@ class LoggedUser with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove("token");
     prefs.remove("phone");
+    prefs.remove("name");
+    prefs.clear();
     showDialog(
         context: ctx,
         builder: (BuildContext context) {
@@ -101,6 +103,7 @@ class LoggedUser with ChangeNotifier {
     print("response got as ${response.body}");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('phone', phone);
+    return response;
     login(ctx, phone, pass);
   }
 

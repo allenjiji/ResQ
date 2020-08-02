@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:resq/main.dart';
 import 'package:resq/pages/login_page.dart';
@@ -17,10 +20,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  bool isloading = false;
-  bool showerror1 = false;
-  bool showerror2 = false;
-  bool showerror3 = false;
   @override
   dispose() {
     super.dispose();
@@ -31,6 +30,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isloading = false;
+    bool showerror1 = false;
+    bool showerror2 = false;
+    bool showerror3 = false;
+    bool exists = false;
     final LoggedUser user = Provider.of<LoggedUser>(context, listen: false);
 
     var w = MediaQuery.of(context).size.width;
@@ -54,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password/പാസ്സ്‌വേർഡ്",
-          errorText:showerror3? "Enter minimum 8 characters":null,
+          errorText: showerror3 ? "Enter minimum 8 characters" : null,
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
@@ -73,16 +77,14 @@ class _RegisterPageState extends State<RegisterPage> {
             setState(() {
               showerror1 = true;
             });
-            if (widget.nameController.text.isEmpty) {
-              setState(() {
-                showerror2 = true;
-              });
-            }
-            if (widget.passController.text.length<8) {
-              setState(() {
-                showerror3 = true;
-              });
-            }
+          } else if (widget.nameController.text.isEmpty) {
+            setState(() {
+              showerror2 = true;
+            });
+          } else if (widget.passController.text.length < 8) {
+            setState(() {
+              showerror3 = true;
+            });
           } else if (widget.phoneConroller.text != '' &&
               widget.passController.text != '' &&
               widget.nameController.text != '') {
@@ -94,12 +96,24 @@ class _RegisterPageState extends State<RegisterPage> {
           user.phone = widget.phoneConroller.text;
           user.password = widget.passController.text;
           var location = await user.getLocation();
-          user.register(
+          Response response = await user.register(
               (widget.phoneConroller.text),
               (widget.passController.text),
               (widget.nameController.text),
               context,
               location);
+          print(
+              "object====>===>==>====>${json.decode(response.body)["phone"]}");
+          if (json.decode(response.body)["phone"] !=
+              widget.phoneConroller.text) {
+            setState(() {
+              exists = true;
+              isloading = false;
+            });
+          } else {
+            user.login(context, widget.phoneConroller.text,
+                widget.passController.text);
+          }
         },
         child: Text("Register",
             textAlign: TextAlign.center,
@@ -136,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         contentPadding:
                             EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         hintText: "Name/പേര്",
-                        errorText: showerror2?"Enter a valid Name":null,
+                        errorText: showerror2 ? "Enter a valid Name" : null,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0))),
                   ),
@@ -151,8 +165,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   InkWell(
                     child: Center(
-                      child: Text("Alredy a user? Login",
-                          style: TextStyle(color: Colors.red)),
+                      child: exists
+                          ? Text("This Phone is already registered.Try LOGIN",
+                              style: TextStyle(color: Colors.red))
+                          : Text("Alredy a user? Login",
+                              style: TextStyle(color: Colors.red)),
                     ),
                     onTap: () => Navigator.of(context)
                         .pushReplacementNamed(LoginPage.routeName),
