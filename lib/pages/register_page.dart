@@ -18,6 +18,9 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool isloading = false;
+  bool showerror1 = false;
+  bool showerror2 = false;
+  bool showerror3 = false;
   @override
   dispose() {
     super.dispose();
@@ -40,6 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Phone/ഫോൺ",
+          errorText: showerror1 ? "Enter a valid Phone Number" : null,
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
@@ -50,6 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password/പാസ്സ്‌വേർഡ്",
+          errorText:showerror3? "Enter minimum 8 characters":null,
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
@@ -64,7 +69,21 @@ class _RegisterPageState extends State<RegisterPage> {
           print("hello ${widget.phoneConroller.text}");
           print(widget.passController.text);
           print(widget.nameController.text);
-          if (widget.phoneConroller.text != '' &&
+          if (widget.phoneConroller.text.length != 10) {
+            setState(() {
+              showerror1 = true;
+            });
+            if (widget.nameController.text.isEmpty) {
+              setState(() {
+                showerror2 = true;
+              });
+            }
+            if (widget.passController.text.length<8) {
+              setState(() {
+                showerror3 = true;
+              });
+            }
+          } else if (widget.phoneConroller.text != '' &&
               widget.passController.text != '' &&
               widget.nameController.text != '') {
             setState(() {
@@ -117,6 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         contentPadding:
                             EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         hintText: "Name/പേര്",
+                        errorText: showerror2?"Enter a valid Name":null,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0))),
                   ),

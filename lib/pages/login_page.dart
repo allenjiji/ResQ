@@ -14,6 +14,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     bool isloading = false;
+    bool showerror1 = false;
+    bool showerror2 = false;
+
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
@@ -23,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       controller: phoneController,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          errorText: showerror1 ? "Enter a valid Phone Number" : null,
           hintText: "Phone/ഫോൺ",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
@@ -34,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password/പാസ്സ്‌വേർഡ്",
+          errorText: showerror2 ? "Enter a valid Password" : null,
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
@@ -47,7 +52,16 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           print(phoneController.text);
           print(passController.text);
-          if (phoneController.text != '' && passController.text != '') {
+          if (phoneController.text.length != 10) {
+            setState(() {
+              showerror1 = true;
+            });
+          }
+          if (passController.text.length < 8) {
+            setState(() {
+              showerror2 = true;
+            });
+          } else if (phoneController.text != '' && passController.text != '') {
             setState(() {
               isloading = true;
             });
