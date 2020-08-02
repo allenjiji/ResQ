@@ -80,7 +80,7 @@ class _FeedState extends State<Feed> {
     print(currentUserId);
     print("(inside build)currentUserId is $currentUserId");
     final h = MediaQuery.of(context).size.height;
-    List<Widget> bottonSheetItems = [
+    List<Widget> bottomSheetItems = [
       TextFormField(
         keyboardType: TextInputType.text,
         decoration:
@@ -157,11 +157,14 @@ class _FeedState extends State<Feed> {
                 ),
                 trailing: Icon(Icons.arrow_forward_ios, color: Colors.red),
                 onTap: () => showModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(h / 40))),
                     context: context,
                     builder: (_) {
                       return BottomContainerForm(
                         formKey: formKey,
-                        items: bottonSheetItems,
+                        items: bottomSheetItems,
                       );
                     })),
           ),

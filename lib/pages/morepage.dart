@@ -245,7 +245,6 @@ class _MoreState extends State<More> {
               "You will appear as a Volunteer to others from now.",
               textAlign: TextAlign.center,
             )));
-
           },
           child: Text("SUBMIT"),
         ),

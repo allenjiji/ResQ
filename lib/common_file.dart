@@ -253,6 +253,7 @@ class Post with ChangeNotifier {
         break;
       default:
     }
+    print("p.category is ${p.category}");
     switch (p.category) {
       case "request":
         isRequest = "yes";

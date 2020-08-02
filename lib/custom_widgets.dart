@@ -255,7 +255,7 @@ class _NewDropDownState extends State<NewDropDown> {
       onChanged: (value) {
         print("selected $value from dropdown");
         widget.postObject.genre = value;
-        widget.postObject.category = 'request';
+        //widget.postObject.category = 'request';
         setState(() {
           _selectedValue = "$value";
         });
