@@ -47,17 +47,17 @@ class _FeedBoxState extends State<FeedBox> {
     final String phone = prefs.getString('phone');
     String url = 'http://kresq.herokuapp.com/resq/userprofile/?phone=$phone';
     Response response = await get(url);
-    print(json.decode(response.body));
+    //print(json.decode(response.body));
     var body = json.decode(response.body);
-    currentUser = body[0]["id"];
-    print(currentUser);
+    currentUser = body[0]["id"].toString();
+    //print(currentUser);
   }
 
   Post _post = Post();
   getdetails(phone) async {
     String url = 'http://kresq.herokuapp.com/resq/userprofile/?phone=$phone';
     Response response = await get(url);
-    print(response.body);
+    //print(response.body);
     return response;
   }
 

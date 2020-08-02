@@ -32,12 +32,24 @@ List<List<String>> dropdownItems2 = [
 
 class _FeedState extends State<Feed> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    //print("inside initState() next==>$next");
+    super.initState();
+    fetch();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Post p = new Post();
   String next =
       'http://kresq.herokuapp.com/resq/userpost/?ordering=-creationtime';
-  bool hadData = true;
-  bool isloading = false;
-  List posts;
+
+  List posts = [];
 
   String _genreDecider(bool isRequest, bool isDonate, bool isAnnouncement) {
     if (isRequest) return "request";
@@ -45,24 +57,27 @@ class _FeedState extends State<Feed> {
     if (isDonate) return "supply";
   }
 
-  String currentUserId;
-
-  getCurrentUser(LoggedUser user) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String phone = prefs.getString('phone');
-    print(phone);
-    user.phone = phone;
-    Response response = await user.getUserid(user);
-    user.id = json.decode(response.body)[0]["id"].toString();
-    currentUserId = json.decode(response.body)[0]["id"].toString();
-  }
-
   @override
   Widget build(BuildContext context) {
     final Post _post = Provider.of<Post>(context, listen: false);
-    final LoggedUser user = LoggedUser();
-    getCurrentUser(user);
-    print(currentUserId);
+    String currentUserId;
+    LoggedUser user = LoggedUser();
+    getCurrentUser(LoggedUser user) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String phone = prefs.getString('phone');
+      //print("(inside getCurrentUser) phone no is.$phone");
+      user.phone = phone;
+      Response response = await user.getUserid(user);
+      print(
+          "(inside getCurrentUser) user id is.${json.decode(response.body)[0]["id"].toString()}");
+      user.id = json.decode(response.body)[0]["id"].toString();
+      //currentUserId = json.decode(response.body)[0]["id"].toString();
+      //return currentUserId;
+      return user;
+    }
+
+    getCurrentUser(user).then((value) => user = value);
+    print("(inside build)currentUserId is ${user.phone}");
     final h = MediaQuery.of(context).size.height;
     List<Widget> bottonSheetItems = [
       TextFormField(
@@ -150,90 +165,54 @@ class _FeedState extends State<Feed> {
                     })),
           ),
           Expanded(
-              child: FutureBuilder(
-            future: _post.getPosts(next),
-            builder: (context, snapshot) {
-              print(snapshot.connectionState);
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return Center(child: Text("Loading..."));
-                  break;
-                case ConnectionState.done:
-                  {
-                    print("done");
-                    if (snapshot.hasData) {
-                      print(snapshot.data);
-                      var snapResponse = snapshot.data;
-                      var snapData = snapResponse.body;
-                      print(snapData);
-                      var data = json.decode(snapData);
-                      print(data);
-                      if (data["results"].length == 0) {
-                        return Center(child: Text("No Feeds"));
-                      }
-                      next = data["next"];
-                      posts == null
-                          ? posts = data["results"]
-                          : posts.addAll(data["results"]);
-                      //posts = data["results"];
-                      return LazyLoadScrollView(
-                        onEndOfPage: () {
-                          /*  if (next != null) setState(() {}); */
-                        },
-                        child: ListView.builder(
-                          itemCount: (posts.length),
-                          itemBuilder: (context, index) {
-                            if (index >= posts.length && isloading) {
-                              return Center(
-                                  child: CircularProgressIndicator(
-                                backgroundColor: Colors.red,
-                              ));
-                            }
-                            /* print(posts[index]["upvotes"]
-                                .contains(int.parse(currentUserId))); */
-                            Post p = new Post(
-                                description: posts[index]["content"],
-                                heading: posts[index]["heading"],
-                                genre: _genreDecider(
-                                    posts[index]["isRequest"],
-                                    posts[index]["isDonate"],
-                                    posts[index]["isAnnouncement"]),
-                                isVoted: posts[index]["upvotes"]
-                                    .contains(int.parse(currentUserId)),
-                                //isVoted: false,
-                                phone: posts[index]["contactphn"],
-                                position: Position(
-                                    latitude: double.parse(posts[index]["lat"]),
-                                    longitude:
-                                        double.parse(posts[index]["lon"])),
-                                image: posts[index]["image"] == null
-                                    ? ""
-                                    : posts[index]["image"],
-                                postId: posts[index]["id"],
-                                votes: posts[index]["upvotes"].length,
-                                name: posts[index]["userprofile"].toString());
-                            return FeedBox(
-                                p: p,
-                                showremove: posts[index]["userprofile"] ==
-                                    int.parse(currentUserId));
-                          },
-                        ),
-                      );
-                    } else {
-                      return Center(child: Text("No Internet Connection"));
-                    }
-                  }
-                  break;
-                case ConnectionState.none:
-                  return Center(child: Text("None"));
-                  break;
-                default:
-                  return Center(child: Text("Default return by switch"));
-              }
-            },
-          )),
+              child: LazyLoadScrollView(
+                  child: ListView.builder(
+                    itemCount: posts.length,
+                    itemBuilder: (context, index) {
+                      //return Text("${posts[index]["userprofile"]} and $index");
+                      Post p = new Post(
+                          description: posts[index]["content"],
+                          heading: posts[index]["heading"],
+                          genre: _genreDecider(
+                              posts[index]["isRequest"],
+                              posts[index]["isDonate"],
+                              posts[index]["isAnnouncement"]),
+                          isVoted:
+                              posts[index]["upvotes"].contains(currentUserId),
+                          //isVoted: false,
+                          phone: posts[index]["contactphn"],
+                          position: Position(
+                              latitude: double.parse(posts[index]["lat"]),
+                              longitude: double.parse(posts[index]["lon"])),
+                          image: posts[index]["image"] == null
+                              ? ""
+                              : posts[index]["image"],
+                          postId: posts[index]["id"],
+                          votes: posts[index]["upvotes"].length,
+                          name: posts[index]["userprofile"].toString());
+                      return FeedBox(
+                          p: p,
+                          showremove:
+                              posts[index]["userprofile"] == currentUserId);
+                    },
+                  ),
+                  onEndOfPage: () => fetch())),
         ],
       ),
     );
+  }
+
+  Post _post = Post();
+  fetch() async {
+    Response response = await _post.getPosts(next);
+    if (response.statusCode == 200) {
+      next = json.decode(response.body)["next"];
+      //print("this is new line:===>>${json.decode(response.body)["results"]}");
+      setState(() {
+        posts.addAll(json.decode(response.body)["results"]);
+      });
+    } else {
+      throw Exception('Failed to load');
+    }
   }
 }
