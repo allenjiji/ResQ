@@ -93,6 +93,8 @@ class _MoreState extends State<More> {
       ),
       TextFormField(
         keyboardType: TextInputType.multiline,
+        minLines: 1,
+        maxLines: null,
         decoration: InputDecoration(
             hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
         onSaved: (newValue) => p.description = newValue,
@@ -152,6 +154,8 @@ class _MoreState extends State<More> {
       ),
       TextFormField(
         keyboardType: TextInputType.multiline,
+        minLines: 1,
+        maxLines: null,
         decoration: InputDecoration(
             hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
         onSaved: (newValue) => p.description = newValue,

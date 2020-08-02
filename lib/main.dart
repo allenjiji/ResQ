@@ -15,11 +15,10 @@ import './pages/weathermap.dart';
 import './pages/register_page.dart';
 
 void main() {
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
   runApp(ChangeNotifierProvider(
       create: (context) => LoggedUser(), child: MyApp()));
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 }
 
 Position location;

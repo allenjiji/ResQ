@@ -108,7 +108,9 @@ class _FeedState extends State<Feed> {
         onSaved: (newValue) => p.heading = newValue,
       ),
       TextFormField(
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.multiline,
+        minLines: 1,
+        maxLines: null,
         decoration: InputDecoration(
             hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
         onSaved: (newValue) => p.description = newValue,
@@ -137,7 +139,10 @@ class _FeedState extends State<Feed> {
               textAlign: TextAlign.center,
             )));
           },
-          child: Text("SUBMIT"),
+          child: Text(
+            "SUBMIT",
+            style: TextStyle(fontSize: 20, color: Colors.red),
+          ),
         ),
       ),
     ];
@@ -157,14 +162,14 @@ class _FeedState extends State<Feed> {
                 ),
                 trailing: Icon(Icons.arrow_forward_ios, color: Colors.red),
                 onTap: () => showModalBottomSheet(
-                  isScrollControlled: true,
+                    isScrollControlled: true,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
                             top: Radius.circular(h / 40))),
                     context: context,
                     builder: (_) {
                       return Container(
-                        height: h*.75,
+                        height: h * .75,
                         child: BottomContainerForm(
                           formKey: formKey,
                           items: bottomSheetItems,
