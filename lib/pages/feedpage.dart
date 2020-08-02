@@ -57,27 +57,26 @@ class _FeedState extends State<Feed> {
     if (isDonate) return "supply";
   }
 
+  String currentUserId;
+  getCurrentUser(LoggedUser user) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String phone = prefs.getString('phone');
+    //print(phone);
+    user.phone = phone;
+    Response response = await user.getUserid(user);
+    user.id = json.decode(response.body)[0]["id"].toString();
+    currentUserId = json.decode(response.body)[0]["id"].toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Post _post = Provider.of<Post>(context, listen: false);
-    String currentUserId;
-    LoggedUser user = LoggedUser();
-    getCurrentUser(LoggedUser user) async {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String phone = prefs.getString('phone');
-      //print("(inside getCurrentUser) phone no is.$phone");
-      user.phone = phone;
-      Response response = await user.getUserid(user);
-      print(
-          "(inside getCurrentUser) user id is.${json.decode(response.body)[0]["id"].toString()}");
-      user.id = json.decode(response.body)[0]["id"].toString();
-      //currentUserId = json.decode(response.body)[0]["id"].toString();
-      //return currentUserId;
-      return user;
-    }
 
-    getCurrentUser(user).then((value) => user = value);
-    print("(inside build)currentUserId is ${user.phone}");
+    LoggedUser user = LoggedUser();
+
+    getCurrentUser(user);
+    print(currentUserId);
+    print("(inside build)currentUserId is $currentUserId");
     final h = MediaQuery.of(context).size.height;
     List<Widget> bottonSheetItems = [
       TextFormField(
@@ -178,7 +177,7 @@ class _FeedState extends State<Feed> {
                               posts[index]["isDonate"],
                               posts[index]["isAnnouncement"]),
                           isVoted:
-                              posts[index]["upvotes"].contains(currentUserId),
+                              posts[index]["upvotes"].contains(int.parse(currentUserId)),
                           //isVoted: false,
                           phone: posts[index]["contactphn"],
                           position: Position(
@@ -193,7 +192,7 @@ class _FeedState extends State<Feed> {
                       return FeedBox(
                           p: p,
                           showremove:
-                              posts[index]["userprofile"] == currentUserId);
+                              posts[index]["userprofile"].toString() == currentUserId);
                     },
                   ),
                   onEndOfPage: () => fetch())),
