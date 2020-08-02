@@ -358,7 +358,7 @@ class _MoreState extends State<More> {
                       context: context,
                       builder: (_) {
                         return Container(
-                          height: h * .75,
+                          height: h * .90,
                           child: BottomContainerForm(
                             formKey: formKey,
                             items: bottonSheetItemsRequests,
@@ -387,7 +387,7 @@ class _MoreState extends State<More> {
                       context: context,
                       builder: (_) {
                         return Container(
-                          height: h * .75,
+                          height: h * .90,
                           child: BottomContainerForm(
                             formKey: formKey,
                             items: bottonSheetItemsDonate,
@@ -405,7 +405,7 @@ class _MoreState extends State<More> {
                       context: context,
                       builder: (_) {
                         return Container(
-                          height: h * .75,
+                          height: h * .90,
                           child: BottomContainerForm(
                             formKey: formKey,
                             items: bottonSheetItemsVolunteer,

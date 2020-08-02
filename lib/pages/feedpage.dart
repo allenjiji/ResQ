@@ -193,7 +193,7 @@ class _FeedState extends State<Feed> {
                     context: context,
                     builder: (_) {
                       return Container(
-                        height: h * .75,
+                        height: h * .90,
                         child: BottomContainerForm(
                           formKey: formKey,
                           items: bottomSheetItems,

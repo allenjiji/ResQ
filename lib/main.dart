@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:resq/common_file.dart';
 import 'package:resq/myprofile.dart';
@@ -34,11 +35,14 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
         accentColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: TextTheme(
+        textTheme: GoogleFonts.cantarellTextTheme(
+          Theme.of(context).textTheme,
+        ),
+        /* textTheme: TextTheme(
           headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
           bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        ),
+        ), */
       ),
       debugShowCheckedModeBanner: false,
       //home: MyHomePage(),
