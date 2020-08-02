@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoggedUser user = Provider.of<LoggedUser>(context, listen: false);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'RESQ',
       theme: ThemeData(
         primaryColor: Colors.black,
         accentColor: Colors.white,

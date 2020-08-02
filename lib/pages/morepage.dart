@@ -93,6 +93,8 @@ class _MoreState extends State<More> {
       ),
       TextFormField(
         keyboardType: TextInputType.multiline,
+        minLines: 1,
+        maxLines: null,
         decoration: InputDecoration(
             hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
         onSaved: (newValue) => p.description = newValue,
@@ -121,9 +123,11 @@ class _MoreState extends State<More> {
               "POST SENT....IT WILL APPEAR ON FEED PAGE SOON.",
               textAlign: TextAlign.center,
             )));
-
           },
-          child: Text("SUBMIT",style: TextStyle(fontSize: 20,color: Colors.red),),
+          child: Text(
+            "SUBMIT",
+            style: TextStyle(fontSize: 20, color: Colors.red),
+          ),
         ),
       ),
     ];
@@ -152,6 +156,8 @@ class _MoreState extends State<More> {
       ),
       TextFormField(
         keyboardType: TextInputType.multiline,
+        minLines: 1,
+        maxLines: null,
         decoration: InputDecoration(
             hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
         onSaved: (newValue) => p.description = newValue,
@@ -181,7 +187,10 @@ class _MoreState extends State<More> {
               textAlign: TextAlign.center,
             )));
           },
-          child: Text("Donate to Public",style: TextStyle(fontSize: 20,color: Colors.red),),
+          child: Text(
+            "Donate to Public",
+            style: TextStyle(fontSize: 20, color: Colors.red),
+          ),
         ),
       ),
       ButtonTheme(
@@ -246,7 +255,10 @@ class _MoreState extends State<More> {
               textAlign: TextAlign.center,
             )));
           },
-          child: Text("SUBMIT",style: TextStyle(fontSize: 20,color: Colors.red),),
+          child: Text(
+            "SUBMIT",
+            style: TextStyle(fontSize: 20, color: Colors.red),
+          ),
         ),
       ),
     ];
@@ -274,7 +286,7 @@ class _MoreState extends State<More> {
                       context: context,
                       builder: (_) {
                         return Container(
-                          height: h*.75,
+                          height: h * .75,
                           child: BottomContainerForm(
                             formKey: formKey,
                             items: bottonSheetItemsRequests,
@@ -303,7 +315,7 @@ class _MoreState extends State<More> {
                       context: context,
                       builder: (_) {
                         return Container(
-                          height: h*.75,
+                          height: h * .75,
                           child: BottomContainerForm(
                             formKey: formKey,
                             items: bottonSheetItemsDonate,
@@ -321,7 +333,7 @@ class _MoreState extends State<More> {
                       context: context,
                       builder: (_) {
                         return Container(
-                          height: h*.75,
+                          height: h * .75,
                           child: BottomContainerForm(
                             formKey: formKey,
                             items: bottonSheetItemsVolunteer,
@@ -349,7 +361,7 @@ class _MoreState extends State<More> {
               }
             },
             child: Container(
-              margin: EdgeInsets.all(h/80),
+              margin: EdgeInsets.all(h / 80),
               decoration: BoxDecoration(
                 //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
                 color: Colors.white,
