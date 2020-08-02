@@ -22,7 +22,7 @@ class Contacts extends StatelessWidget {
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     String url =
-        "http://kresq.herokuapp.com/resq/userprofile/?lat=${position.latitude}&lon=${position.longitude}&is_volunteer=False";
+        "http://kresq.herokuapp.com/resq/userprofile/?lat=${position.latitude}&lon=${position.longitude}&is_volunteer=True";
     var response = await http.get(url);
 
     return response;
