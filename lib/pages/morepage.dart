@@ -4,7 +4,7 @@ import 'package:resq/common_file.dart';
 import 'package:flutter/material.dart';
 import 'package:resq/bottom_sheet.dart';
 import 'package:resq/custom_widgets.dart';
-import 'package:resq/myprofile.dart';
+import 'package:resq/pages/myprofile.dart';
 import 'package:resq/pages/announcements.dart';
 import 'package:resq/pages/faqPage.dart';
 import 'package:resq/pages/guidePage.dart';
