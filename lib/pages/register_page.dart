@@ -94,56 +94,57 @@ class _RegisterPageState extends State<RegisterPage> {
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                 SizedBox(
-                  height: h/5,
-                  child: Image.asset(
-                    "lib/assets/playstore.png",
-                    fit: BoxFit.contain,
-                  ),
-                ), 
-                SizedBox(height: h / 10),
-                phoneField,
-                SizedBox(height: h / 50),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  //style: style,
-                  controller: widget.nameController,
-                  decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                      hintText: "Name/പേര്",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32.0))),
-                ),
-                SizedBox(height: h / 50),
-                passwordField,
-                SizedBox(
-                  height: h / 20,
-                ),
-                registerButon,
-                SizedBox(
-                  height: h / 50,
-                ),
-                InkWell(
-                  child: Center(
-                    child: Text(
-                      "Alredy a user? Login",style: TextStyle(color: Colors.red)
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: h / 5,
+                    child: Image.asset(
+                      "lib/assets/playstore.png",
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  onTap: () => Navigator.of(context)
-                      .pushReplacementNamed(LoginPage.routeName),
-                ),
-                Container(
-                    child: isloading
-                        ? CircularProgressIndicator(
-                            backgroundColor: Colors.red,
-                          )
-                        : Container())
-              ],
+                  SizedBox(height: h / 10),
+                  phoneField,
+                  SizedBox(height: h / 50),
+                  TextField(
+                    keyboardType: TextInputType.text,
+                    //style: style,
+                    controller: widget.nameController,
+                    decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        hintText: "Name/പേര്",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0))),
+                  ),
+                  SizedBox(height: h / 50),
+                  passwordField,
+                  SizedBox(
+                    height: h / 20,
+                  ),
+                  registerButon,
+                  SizedBox(
+                    height: h / 50,
+                  ),
+                  InkWell(
+                    child: Center(
+                      child: Text("Alredy a user? Login",
+                          style: TextStyle(color: Colors.red)),
+                    ),
+                    onTap: () => Navigator.of(context)
+                        .pushReplacementNamed(LoginPage.routeName),
+                  ),
+                  Container(
+                      child: isloading
+                          ? CircularProgressIndicator(
+                              backgroundColor: Colors.red,
+                            )
+                          : Container())
+                ],
+              ),
             ),
           ),
         ),

@@ -67,44 +67,47 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: h/5,
-                  child: Image.asset(
-                    "lib/assets/playstore.png",
-                    fit: BoxFit.contain,
-                  ),
-                ), 
-                SizedBox(height: h / 10),
-                phoneField,
-                SizedBox(height: h / 50),
-                passwordField,
-                SizedBox(
-                  height: h / 20,
-                ),
-                loginButon,
-                SizedBox(
-                  height: h / 50,
-                ),
-                InkWell(
-                  child: Center(
-                    child: Text(
-                      "New User ? Register",style: TextStyle(color: Colors.red),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: h / 5,
+                    child: Image.asset(
+                      "lib/assets/playstore.png",
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  onTap: () => Navigator.of(context)
-                      .pushReplacementNamed(RegisterPage.routeName),
-                ),
-                Container(
-                    child: isloading
-                        ? CircularProgressIndicator(
-                            backgroundColor: Colors.red,
-                          )
-                        : Container())
-              ],
+                  SizedBox(height: h / 10),
+                  phoneField,
+                  SizedBox(height: h / 50),
+                  passwordField,
+                  SizedBox(
+                    height: h / 20,
+                  ),
+                  loginButon,
+                  SizedBox(
+                    height: h / 50,
+                  ),
+                  InkWell(
+                    child: Center(
+                      child: Text(
+                        "New User ? Register",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                    onTap: () => Navigator.of(context)
+                        .pushReplacementNamed(RegisterPage.routeName),
+                  ),
+                  Container(
+                      child: isloading
+                          ? CircularProgressIndicator(
+                              backgroundColor: Colors.red,
+                            )
+                          : Container())
+                ],
+              ),
             ),
           ),
         ),
