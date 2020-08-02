@@ -60,7 +60,10 @@ class LoggedUser with ChangeNotifier {
         context: ctx,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("LOGOUT"),
+            title: Text(
+              "LOGOUT",
+              style: TextStyle(fontSize: 20, color: Colors.red,fontStyle: FontStyle.normal),
+            ),
             content: Text("Are you sure ?"),
             actions: [
               FlatButton(

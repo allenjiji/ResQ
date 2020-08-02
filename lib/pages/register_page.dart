@@ -34,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
     var h = MediaQuery.of(context).size.height;
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
     final phoneField = TextField(
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.number,
       //style: style,
       controller: widget.phoneConroller,
       decoration: InputDecoration(

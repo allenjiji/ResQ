@@ -123,7 +123,7 @@ class _MoreState extends State<More> {
             )));
 
           },
-          child: Text("SUBMIT"),
+          child: Text("SUBMIT",style: TextStyle(fontSize: 20,color: Colors.red),),
         ),
       ),
     ];
@@ -181,7 +181,7 @@ class _MoreState extends State<More> {
               textAlign: TextAlign.center,
             )));
           },
-          child: Text("Donate to Public"),
+          child: Text("Donate to Public",style: TextStyle(fontSize: 20,color: Colors.red),),
         ),
       ),
       ButtonTheme(
@@ -246,7 +246,7 @@ class _MoreState extends State<More> {
               textAlign: TextAlign.center,
             )));
           },
-          child: Text("SUBMIT"),
+          child: Text("SUBMIT",style: TextStyle(fontSize: 20,color: Colors.red),),
         ),
       ),
     ];
@@ -267,15 +267,18 @@ class _MoreState extends State<More> {
                 case 0:
                   showModalBottomSheet(
                       enableDrag: true,
-                      //isScrollControlled: true,
+                      isScrollControlled: true,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
                               top: Radius.circular(h / 40))),
                       context: context,
                       builder: (_) {
-                        return BottomContainerForm(
-                          formKey: formKey,
-                          items: bottonSheetItemsRequests,
+                        return Container(
+                          height: h*.75,
+                          child: BottomContainerForm(
+                            formKey: formKey,
+                            items: bottonSheetItemsRequests,
+                          ),
                         );
                       });
 
@@ -293,30 +296,36 @@ class _MoreState extends State<More> {
                 case 3:
                   showModalBottomSheet(
                       enableDrag: true,
-                      //isScrollControlled: true,
+                      isScrollControlled: true,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
                               top: Radius.circular(h / 40))),
                       context: context,
                       builder: (_) {
-                        return BottomContainerForm(
-                          formKey: formKey,
-                          items: bottonSheetItemsDonate,
+                        return Container(
+                          height: h*.75,
+                          child: BottomContainerForm(
+                            formKey: formKey,
+                            items: bottonSheetItemsDonate,
+                          ),
                         );
                       });
                   break;
                 case 4:
                   showModalBottomSheet(
                       enableDrag: true,
-                      //isScrollControlled: true,
+                      isScrollControlled: true,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
                               top: Radius.circular(h / 40))),
                       context: context,
                       builder: (_) {
-                        return BottomContainerForm(
-                          formKey: formKey,
-                          items: bottonSheetItemsVolunteer,
+                        return Container(
+                          height: h*.75,
+                          child: BottomContainerForm(
+                            formKey: formKey,
+                            items: bottonSheetItemsVolunteer,
+                          ),
                         );
                       });
                   break;
