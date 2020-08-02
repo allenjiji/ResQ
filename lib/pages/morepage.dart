@@ -74,11 +74,23 @@ class _MoreState extends State<More> {
         decoration:
             InputDecoration(hintText: "Place/സ്ഥലം", labelText: "Place/സ്ഥലം"),
         onSaved: (newValue) => p.place = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
             hintText: "District/ജില്ല", labelText: "District/ജില്ല"),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
         onSaved: (newValue) => p.district = newValue,
       ),
       NewDropDown(
@@ -90,6 +102,12 @@ class _MoreState extends State<More> {
         decoration: InputDecoration(
             hintText: "Heading/തലക്കെട്ട്", labelText: "Heading/തലക്കെട്ട്"),
         onSaved: (newValue) => p.heading = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       TextFormField(
         keyboardType: TextInputType.multiline,
@@ -98,6 +116,12 @@ class _MoreState extends State<More> {
         decoration: InputDecoration(
             hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
         onSaved: (newValue) => p.description = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       ButtonTheme(
         minWidth: double.infinity,
@@ -116,16 +140,18 @@ class _MoreState extends State<More> {
               print("Saved");
               print("${p.genre}");
               _post.makePost(p);
+              Navigator.of(context).pop();
+              Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                "POST SENT....IT WILL APPEAR ON FEED PAGE SOON.",
+                textAlign: TextAlign.center,
+              )));
             }
-            Navigator.of(context).pop();
-            Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-              "POST SENT....IT WILL APPEAR ON FEED PAGE SOON.",
-              textAlign: TextAlign.center,
-            )));
-
           },
-          child: Text("SUBMIT",style: TextStyle(fontSize: 20,color: Colors.red),),
+          child: Text(
+            "SUBMIT",
+            style: TextStyle(fontSize: 20, color: Colors.red),
+          ),
         ),
       ),
     ];
@@ -135,12 +161,24 @@ class _MoreState extends State<More> {
         decoration:
             InputDecoration(hintText: "Place/സ്ഥലം", labelText: "Place/സ്ഥലം"),
         onSaved: (newValue) => p.place = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
             hintText: "District/ജില്ല", labelText: "District/ജില്ല"),
         onSaved: (newValue) => p.district = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       NewDropDown(
         dropDownItems: dropdownItems,
@@ -151,6 +189,12 @@ class _MoreState extends State<More> {
         decoration: InputDecoration(
             hintText: "Heading/തലക്കെട്ട്", labelText: "Heading/തലക്കെട്ട്"),
         onSaved: (newValue) => p.heading = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       TextFormField(
         keyboardType: TextInputType.multiline,
@@ -159,6 +203,12 @@ class _MoreState extends State<More> {
         decoration: InputDecoration(
             hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
         onSaved: (newValue) => p.description = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       ButtonTheme(
         minWidth: double.infinity,
@@ -177,15 +227,18 @@ class _MoreState extends State<More> {
               print("Saved");
               print("${p.genre}");
               _post.makePost(p);
+              Navigator.of(context).pop();
+              Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                "POST SENT....IT WILL APPEAR ON FEED PAGE SOON.",
+                textAlign: TextAlign.center,
+              )));
             }
-            Navigator.of(context).pop();
-            Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-              "POST SENT....IT WILL APPEAR ON FEED PAGE SOON.",
-              textAlign: TextAlign.center,
-            )));
           },
-          child: Text("Donate to Public",style: TextStyle(fontSize: 20,color: Colors.red),),
+          child: Text(
+            "Donate to Public",
+            style: TextStyle(fontSize: 20, color: Colors.red),
+          ),
         ),
       ),
       ButtonTheme(
@@ -208,18 +261,36 @@ class _MoreState extends State<More> {
         decoration:
             InputDecoration(hintText: "Place/സ്ഥലം", labelText: "Place/സ്ഥലം"),
         onSaved: (newValue) => user.place = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
             hintText: "District/ജില്ല", labelText: "District/ജില്ല"),
         onSaved: (newValue) => user.district = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
             hintText: "House name ,Street ...", labelText: "Address/വിലാസം"),
         onSaved: (newValue) => user.address = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       TextFormField(
         keyboardType: TextInputType.text,
@@ -227,6 +298,12 @@ class _MoreState extends State<More> {
             hintText: "Medical/Survey etc...",
             labelText: "Area of Volunteering/മേഖല"),
         onSaved: (newValue) => user.areaOfVolunteer = newValue,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'This Field Cannot be Empty';
+          }
+          return null;
+        },
       ),
       ButtonTheme(
         minWidth: double.infinity,
@@ -242,15 +319,18 @@ class _MoreState extends State<More> {
               print("Saved");
               //print("${p.genre}");
               user.makeVolunteer(user);
+              Navigator.of(context).pop();
+              Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                "You will appear as a Volunteer to others from now.",
+                textAlign: TextAlign.center,
+              )));
             }
-            Navigator.of(context).pop();
-            Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-              "You will appear as a Volunteer to others from now.",
-              textAlign: TextAlign.center,
-            )));
           },
-          child: Text("SUBMIT",style: TextStyle(fontSize: 20,color: Colors.red),),
+          child: Text(
+            "SUBMIT",
+            style: TextStyle(fontSize: 20, color: Colors.red),
+          ),
         ),
       ),
     ];
@@ -278,7 +358,7 @@ class _MoreState extends State<More> {
                       context: context,
                       builder: (_) {
                         return Container(
-                          height: h*.75,
+                          height: h * .75,
                           child: BottomContainerForm(
                             formKey: formKey,
                             items: bottonSheetItemsRequests,
@@ -307,7 +387,7 @@ class _MoreState extends State<More> {
                       context: context,
                       builder: (_) {
                         return Container(
-                          height: h*.75,
+                          height: h * .75,
                           child: BottomContainerForm(
                             formKey: formKey,
                             items: bottonSheetItemsDonate,
@@ -325,7 +405,7 @@ class _MoreState extends State<More> {
                       context: context,
                       builder: (_) {
                         return Container(
-                          height: h*.75,
+                          height: h * .75,
                           child: BottomContainerForm(
                             formKey: formKey,
                             items: bottonSheetItemsVolunteer,
@@ -353,7 +433,7 @@ class _MoreState extends State<More> {
               }
             },
             child: Container(
-              margin: EdgeInsets.all(h/80),
+              margin: EdgeInsets.all(h / 80),
               decoration: BoxDecoration(
                 //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
                 color: Colors.white,
