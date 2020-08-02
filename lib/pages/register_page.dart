@@ -20,6 +20,11 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool isloading = false;
+  bool showerror1 = false;
+  bool showerror2 = false;
+  bool showerror3 = false;
+  bool exists = false;
   @override
   dispose() {
     super.dispose();
@@ -30,11 +35,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isloading = false;
-    bool showerror1 = false;
-    bool showerror2 = false;
-    bool showerror3 = false;
-    bool exists = false;
     final LoggedUser user = Provider.of<LoggedUser>(context, listen: false);
 
     var w = MediaQuery.of(context).size.width;
@@ -77,42 +77,58 @@ class _RegisterPageState extends State<RegisterPage> {
             setState(() {
               showerror1 = true;
             });
-          } else if (widget.nameController.text.isEmpty) {
+          } else {
+            setState(() {
+              showerror1 = false;
+            });
+          }
+          if (widget.nameController.text.isEmpty) {
             setState(() {
               showerror2 = true;
             });
-          } else if (widget.passController.text.length < 8) {
+          } else {
+            setState(() {
+              showerror2 = false;
+            });
+          }
+          if (widget.passController.text.length < 8) {
             setState(() {
               showerror3 = true;
             });
-          } else if (widget.phoneConroller.text != '' &&
-              widget.passController.text != '' &&
-              widget.nameController.text != '') {
+          } else {
+            setState(() {
+              showerror3 = false;
+            });
+          }
+          if (widget.nameController.text.isNotEmpty &&
+              widget.passController.text.length >= 8 &&
+              widget.phoneConroller.text.length == 10) {
             setState(() {
               isloading = true;
             });
-          }
-          user.name = widget.nameController.text;
-          user.phone = widget.phoneConroller.text;
-          user.password = widget.passController.text;
-          var location = await user.getLocation();
-          Response response = await user.register(
-              (widget.phoneConroller.text),
-              (widget.passController.text),
-              (widget.nameController.text),
-              context,
-              location);
-          print(
-              "object====>===>==>====>${json.decode(response.body)["phone"]}");
-          if (json.decode(response.body)["phone"] !=
-              widget.phoneConroller.text) {
-            setState(() {
-              exists = true;
-              isloading = false;
-            });
-          } else {
-            user.login(context, widget.phoneConroller.text,
-                widget.passController.text);
+
+            user.name = widget.nameController.text;
+            user.phone = widget.phoneConroller.text;
+            user.password = widget.passController.text;
+            var location = await user.getLocation();
+            Response response = await user.register(
+                (widget.phoneConroller.text),
+                (widget.passController.text),
+                (widget.nameController.text),
+                context,
+                location);
+            print(
+                "object====>===>==>====>${json.decode(response.body)["phone"]}");
+            if (json.decode(response.body)["phone"] !=
+                widget.phoneConroller.text) {
+              setState(() {
+                exists = true;
+                isloading = false;
+              });
+            } else {
+              user.login(context, widget.phoneConroller.text,
+                  widget.passController.text);
+            }
           }
         },
         child: Text("Register",

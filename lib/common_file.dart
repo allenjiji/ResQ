@@ -36,20 +36,24 @@ class LoggedUser with ChangeNotifier {
     print("response got as ${response.body}");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var response_data = json.decode(response.body);
-
-    prefs.setString('token', response_data["token"]);
-    print("Checking");
-    final String token = prefs.getString('token');
-    print(token);
-    prefs.setString('phone', phone);
-    Response res =
-        await get('http://kresq.herokuapp.com/resq/userprofile/?phone=$phone');
-    String name = json.decode(res.body)[0]["name"];
-    print("name is name is ======>$name");
-    prefs.setString('name', name);
-    if (token != null) {
-      Navigator.of(ctx).pushReplacementNamed('/');
+    if (response.body !=
+        '{"non_field_errors":["Unable to log in with provided credentials."]}') {
+      prefs.setString('token', response_data["token"]);
+      print("Checking");
+      final String token = prefs.getString('token');
+      print(token);
+      prefs.setString('phone', phone);
+      Response res = await get(
+          'http://kresq.herokuapp.com/resq/userprofile/?phone=$phone');
+      String name = json.decode(res.body)[0]["name"];
+      print("name is name is ======>$name");
+      prefs.setString('name', name);
+      if (token != null) {
+        Navigator.of(ctx).pushReplacementNamed('/');
+        return 200;
+      }
     }
+    return 400;
   }
 
   logout(BuildContext ctx) async {
@@ -64,7 +68,8 @@ class LoggedUser with ChangeNotifier {
           return AlertDialog(
             title: Text(
               "LOGOUT",
-              style: TextStyle(fontSize: 20, color: Colors.red,fontStyle: FontStyle.normal),
+              style: TextStyle(
+                  fontSize: 20, color: Colors.red, fontStyle: FontStyle.normal),
             ),
             content: Text("Are you sure ?"),
             actions: [

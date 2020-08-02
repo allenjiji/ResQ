@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:resq/common_file.dart';
 import 'package:resq/pages/register_page.dart';
 
@@ -11,6 +12,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isloading = false;
+  bool showerror1 = false;
+  bool showerror2 = false;
+  bool error = false;
   @override
   dispose() {
     super.dispose();
@@ -20,10 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isloading = false;
-    bool showerror1 = false;
-    bool showerror2 = false;
-
+    LoggedUser user = LoggedUser();
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
@@ -56,25 +58,35 @@ class _LoginPageState extends State<LoginPage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
+        onPressed: () async {
           print(widget.phoneController.text);
           print(widget.passController.text);
           if (widget.phoneController.text.length != 10) {
             setState(() {
               showerror1 = true;
             });
-          } else if (widget.passController.text.length < 8) {
+          }
+          if (widget.passController.text.length < 8) {
             setState(() {
               showerror2 = true;
             });
-          } else if (widget.phoneController.text.isNotEmpty &&
-              widget.passController.text.isNotEmpty) {
+          }
+          if (widget.phoneController.text.length == 10 &&
+              widget.passController.text.length >= 8) {
             setState(() {
+              error=false;
               isloading = true;
             });
+            var res = await user.login(context, widget.phoneController.text,
+                widget.passController.text);
+            print(" for now midnignt ====-->>$res");
+            if (res != 200) {
+              setState(() {
+                isloading = false;
+                error = true;
+              });
+            }
           }
-          LoggedUser().login(
-              context, widget.phoneController.text, widget.passController.text);
         },
         child: Text("LOGIN",
             textAlign: TextAlign.center,
@@ -125,6 +137,12 @@ class _LoginPageState extends State<LoginPage> {
                       child: isloading
                           ? CircularProgressIndicator(
                               backgroundColor: Colors.red,
+                            )
+                          : Container()),
+                  Container(
+                      child: error
+                          ? Text(
+                              "INVALID LOGIN",
                             )
                           : Container())
                 ],
