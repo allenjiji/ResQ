@@ -98,13 +98,13 @@ class _RegisterPageState extends State<RegisterPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                /* SizedBox(
-                  height: 155.0,
+                 SizedBox(
+                  height: h/5,
                   child: Image.asset(
-                    "assets/logo.png",
+                    "lib/assets/playstore.png",
                     fit: BoxFit.contain,
                   ),
-                ), */
+                ), 
                 SizedBox(height: h / 10),
                 phoneField,
                 SizedBox(height: h / 50),
@@ -131,7 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 InkWell(
                   child: Center(
                     child: Text(
-                      "Alredy a user? Login",
+                      "Alredy a user? Login",style: TextStyle(color: Colors.red)
                     ),
                   ),
                   onTap: () => Navigator.of(context)
