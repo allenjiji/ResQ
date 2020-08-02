@@ -64,11 +64,10 @@ class LoggedUser with ChangeNotifier {
             content: Text("Are you sure ?"),
             actions: [
               FlatButton(
-                  onPressed:()=> Navigator.of(ctx).pushReplacementNamed('/'),
+                  onPressed: () => Navigator.of(ctx).pushReplacementNamed('/'),
                   child: Text("YES")),
               FlatButton(
-                  onPressed:()=> Navigator.of(ctx).pop(),
-                  child: Text("NO")),
+                  onPressed: () => Navigator.of(ctx).pop(), child: Text("NO")),
             ],
           );
         });
@@ -119,6 +118,31 @@ class LoggedUser with ChangeNotifier {
       'district': user.district,
       'areaofvol': user.areaOfVolunteer,
       'address': user.address
+    };
+    var data = json.encode(map);
+    Response response = await patch(url,
+        headers: {
+          'Authorization': 'Token $token',
+          "Content-type": "application/json"
+        },
+        body: data);
+    print(response.body);
+  }
+
+  unmakeVolunteer(LoggedUser user) async {
+    //var res = getUserid(user);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    user.phone = prefs.getString('phone');
+    print(user.phone);
+    Response res = await getUserid(user);
+    //print(json.decode(res.body)["id"]);
+    var a = (json.decode(res.body));
+    user.id = (a[0]["id"].toString());
+    String url = 'http://kresq.herokuapp.com/resq/userprofile/${user.id}/';
+
+    final String token = prefs.getString('token');
+    Map map = {
+      'is_volunteer': "False",
     };
     var data = json.encode(map);
     Response response = await patch(url,
@@ -207,7 +231,6 @@ class Post with ChangeNotifier {
     String isRequest = "no";
     String isDonate = "no";
     String isAnnouncement = "no";
-
     String isFoodWater = "no";
     String isOther = "no";
     String isToiletries = "no";

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:resq/common_file.dart';
@@ -14,6 +15,9 @@ import './pages/weathermap.dart';
 import './pages/register_page.dart';
 
 void main() {
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   runApp(ChangeNotifierProvider(
       create: (context) => LoggedUser(), child: MyApp()));
 }
@@ -37,6 +41,7 @@ class MyApp extends StatelessWidget {
           bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
       ),
+      debugShowCheckedModeBanner: false,
       //home: MyHomePage(),
       routes: {
         '/': (context) => FutureBuilder(

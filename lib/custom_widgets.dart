@@ -276,8 +276,8 @@ class NewDropDown2 extends StatefulWidget {
 }
 
 class _NewDropDown2State extends State<NewDropDown2> {
-  @override
   String _selectedValue = null;
+  @override
   Widget build(BuildContext context) {
     return DropdownButton(
       hint: Text("Select Category/വിഭാഗം"),
@@ -290,10 +290,14 @@ class _NewDropDown2State extends State<NewDropDown2> {
           .toList(),
       onChanged: (value) {
         print("selected $value from dropdown");
+        //print(widget.postObject.category);
         widget.postObject.category = value;
         setState(() {
           _selectedValue = "$value";
         });
+      },
+      onTap: () {
+        setState(() {});
       },
     );
   }

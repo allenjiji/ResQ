@@ -257,6 +257,7 @@ class _MoreState extends State<More> {
       color: Colors.white,
       child: GridView.count(
         crossAxisCount: 2,
+        childAspectRatio: 1.5,
         //padding: EdgeInsets.all(h / 30),
         children: List.generate(texts.length, (index) {
           return InkWell(
@@ -340,7 +341,7 @@ class _MoreState extends State<More> {
               }
             },
             child: Container(
-              margin: EdgeInsets.all(h / 60),
+              margin: EdgeInsets.all(h/80),
               decoration: BoxDecoration(
                 //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
                 color: Colors.white,
@@ -353,7 +354,7 @@ class _MoreState extends State<More> {
                   children: <Widget>[
                     Icon(
                       texts[index][2],
-                      size: h / 15,
+                      size: h / 20,
                       color: Colors.red,
                     ),
                     //Text('\n'),

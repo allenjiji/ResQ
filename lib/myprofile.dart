@@ -17,7 +17,9 @@ class Profile extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text("Profile"),),
+      appBar: AppBar(
+        title: Text("Profile"),
+      ),
       body: Container(
         child: Center(
             child: FutureBuilder(
@@ -50,6 +52,36 @@ class Profile extends StatelessWidget {
                     leading: Text("Is a Volunteer:"),
                     title: Text(user.isVolunteer ? "YES" : "NO"),
                   ),
+                  user.isVolunteer
+                      ? ListTile(
+                          title: Text("I dont want to be a volunteer.",
+                              style: TextStyle(color: Colors.red)),
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Confirmation"),
+                                    content: Text(
+                                        "Are you sure ?\nOn confirmation you will be soon removed from the volunteers list."),
+                                    actions: [
+                                      FlatButton(
+                                          onPressed: () {
+                                            user.unmakeVolunteer(user);
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("YES")),
+                                      FlatButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: Text("NO")),
+                                    ],
+                                  );
+                                });
+                          },
+                        )
+                      : Container(),
                 ],
               );
             } else {
