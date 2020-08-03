@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:resq/common_file.dart';
 import 'package:resq/pages/myprofile.dart';
@@ -14,11 +15,10 @@ import './pages/weathermap.dart';
 import './pages/register_page.dart';
 
 void main() {
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
   runApp(ChangeNotifierProvider(
       create: (context) => LoggedUser(), child: MyApp()));
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 }
 
 Position location;
@@ -34,11 +34,14 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
         accentColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: TextTheme(
+        textTheme: GoogleFonts.cantarellTextTheme(
+          Theme.of(context).textTheme,
+        ),
+        /* textTheme: TextTheme(
           headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
           bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        ),
+        ), */
       ),
       debugShowCheckedModeBanner: false,
       //home: MyHomePage(),

@@ -1,39 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:resq/common_file.dart';
 import 'package:resq/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
+  final phoneController = TextEditingController();
+  final passController = TextEditingController();
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final phoneController = TextEditingController();
-  final passController = TextEditingController();
+  bool isloading = false;
+  bool showerror1 = false;
+  bool showerror2 = false;
+  bool error = false;
+  @override
+  dispose() {
+    super.dispose();
+    widget.phoneController.dispose();
+    widget.passController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isloading = false;
+    LoggedUser user = LoggedUser();
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
     final phoneField = TextField(
       keyboardType: TextInputType.number,
       //style: style,
-      controller: phoneController,
+      controller: widget.phoneController,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          errorText: showerror1 ? "Enter a valid Phone Number" : null,
           hintText: "Phone/ഫോൺ",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final passwordField = TextField(
       obscureText: true,
-      controller: passController,
+      controller: widget.passController,
       //style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password/പാസ്സ്‌വേർഡ്",
+          errorText: showerror2 ? "Enter a valid Password" : null,
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
@@ -44,16 +58,35 @@ class _LoginPageState extends State<LoginPage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          print(phoneController.text);
-          print(passController.text);
-          if (phoneController.text != '' && passController.text != '') {
+        onPressed: () async {
+          print(widget.phoneController.text);
+          print(widget.passController.text);
+          if (widget.phoneController.text.length != 10) {
             setState(() {
-              isloading = true;
+              showerror1 = true;
             });
           }
-          LoggedUser()
-              .login(context, phoneController.text, passController.text);
+          if (widget.passController.text.length < 8) {
+            setState(() {
+              showerror2 = true;
+            });
+          }
+          if (widget.phoneController.text.length == 10 &&
+              widget.passController.text.length >= 8) {
+            setState(() {
+              error=false;
+              isloading = true;
+            });
+            var res = await user.login(context, widget.phoneController.text,
+                widget.passController.text);
+            print(" for now midnignt ====-->>$res");
+            if (res != 200) {
+              setState(() {
+                isloading = false;
+                error = true;
+              });
+            }
+          }
         },
         child: Text("LOGIN",
             textAlign: TextAlign.center,
@@ -67,44 +100,53 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                /* SizedBox(
-                  height: 155.0,
-                  child: Image.asset(
-                    "assets/logo.png",
-                    fit: BoxFit.contain,
-                  ),
-                ), */
-                SizedBox(height: h / 10),
-                phoneField,
-                SizedBox(height: h / 50),
-                passwordField,
-                SizedBox(
-                  height: h / 20,
-                ),
-                loginButon,
-                SizedBox(
-                  height: h / 50,
-                ),
-                InkWell(
-                  child: Center(
-                    child: Text(
-                      "New User ? Register",
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: h / 5,
+                    child: Image.asset(
+                      "lib/assets/playstore.png",
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  onTap: () => Navigator.of(context)
-                      .pushReplacementNamed(RegisterPage.routeName),
-                ),
-                Container(
-                    child: isloading
-                        ? CircularProgressIndicator(
-                            backgroundColor: Colors.red,
-                          )
-                        : Container())
-              ],
+                  SizedBox(height: h / 10),
+                  phoneField,
+                  SizedBox(height: h / 50),
+                  passwordField,
+                  SizedBox(
+                    height: h / 20,
+                  ),
+                  loginButon,
+                  SizedBox(
+                    height: h / 50,
+                  ),
+                  InkWell(
+                    child: Center(
+                      child: Text(
+                        "New User ? Register",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                    onTap: () => Navigator.of(context)
+                        .pushReplacementNamed(RegisterPage.routeName),
+                  ),
+                  Container(
+                      child: isloading
+                          ? CircularProgressIndicator(
+                              backgroundColor: Colors.red,
+                            )
+                          : Container()),
+                  Container(
+                      child: error
+                          ? Text(
+                              "INVALID LOGIN",
+                            )
+                          : Container())
+                ],
+              ),
             ),
           ),
         ),
