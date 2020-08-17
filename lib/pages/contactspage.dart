@@ -33,18 +33,19 @@ class Contacts extends StatelessWidget {
     return Container(
         height: MediaQuery.of(context).size.height,
         //padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            ExpansionTile(
-              title: Text(
-                'Districtwise Helpline Numbers',
-                style: TextStyle(color: Colors.black),
-              ),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text('''Kasaragod: 9446601700, 0499-4257700
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              ExpansionTile(
+                title: Text(
+                  'Districtwise Helpline Numbers',
+                  style: TextStyle(color: Colors.black),
+                ),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text('''Kasaragod: 9446601700, 0499-4257700
 
 Kannur: 9446682300, 0497-2713266
 
@@ -71,79 +72,80 @@ Pathanamthitta: 8078808915, 0468-2322515
 Kollam: 9447677800, 0474-2794002
 
 Thiruvananthapuram: 9497711281, 0471-2730045'''),
-                ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text(
-                'General Helpline Numbers',
-                style: TextStyle(color: Colors.black),
+                  ),
+                ],
               ),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text('''State Emergency Operation Centre: 9446568222
+              ExpansionTile(
+                title: Text(
+                  'General Helpline Numbers',
+                  style: TextStyle(color: Colors.black),
+                ),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text('''State Emergency Operation Centre: 9446568222
 
 State Toll-free helpline: 1070
 
 State control room: 0471–2331639, 23333198
 
 District toll-free helpline: 1077'''),
-                ),
-              ],
-            ),
-            ExpansionTile(
-              title: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Nearby Volteers within 60 kms',
-                  style: TextStyle(color: Colors.black),
-                ),
+                  ),
+                ],
               ),
-              children: <Widget>[
-                FutureBuilder(
-                  future: get_list(),
-                  builder: (context, snapshot) {
-                    print(snapshot.connectionState);
-                    print(snapshot.hasData);
-                    if (snapshot.hasData &&
-                        snapshot.connectionState == ConnectionState.done) {
-                      //var data = json.decode(snapshot.data);
-                      var content = json.decode(snapshot.data.body);
-                      print(json.decode(snapshot.data.body));
-                      return Container(
-                        height: MediaQuery.of(context).size.height * .41,
-                        child: ListView.builder(
-                          itemCount: content.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: Text(content[index]["name"]),
-                              trailing: InkWell(
-                                child: Text(
-                                  content[index]["phone"],
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      backgroundColor: Colors.yellow),
-                                ),
-                                onTap: () =>
-                                    launchCaller(content[index]["phone"]),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  },
+              ExpansionTile(
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Nearby Volteers within 60 kms',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
-              ],
-            )
-          ],
+                children: <Widget>[
+                  FutureBuilder(
+                    future: get_list(),
+                    builder: (context, snapshot) {
+                      print(snapshot.connectionState);
+                      print(snapshot.hasData);
+                      if (snapshot.hasData &&
+                          snapshot.connectionState == ConnectionState.done) {
+                        //var data = json.decode(snapshot.data);
+                        var content = json.decode(snapshot.data.body);
+                        print(json.decode(snapshot.data.body));
+                        return Container(
+                          height: MediaQuery.of(context).size.height * .41,
+                          child: ListView.builder(
+                            itemCount: content.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: Text(content[index]["name"]),
+                                trailing: InkWell(
+                                  child: Text(
+                                    content[index]["phone"],
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        backgroundColor: Colors.yellow),
+                                  ),
+                                  onTap: () =>
+                                      launchCaller(content[index]["phone"]),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
         ));
   }
 }
