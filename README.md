@@ -10,10 +10,6 @@ It completely works with accurate location of users....
 
 
 
-# Download Now!
-
-For Android : [Download v1.0 (18.7 mb)](https://allenjiji.github.io/ResQ/docs/ResQ.apk)
-
 ### Tech
 
 
@@ -39,6 +35,11 @@ $ git clone https://github.com/anandhakrishnanaji/ResQ
 ```
 <!-- [![N|Solid](https://allenjiji.github.io/ResQ/download.png)](https://allenjiji.github.io/ResQ/ResQ.apk) -->
 
+
+
+# Download Now!
+
+For Android : [Download v1.0 (18.7 mb)](https://allenjiji.github.io/ResQ/docs/ResQ.apk)
 
 
    [git-repo-url]: <https://github.com/joemccann/dillinger.git>
