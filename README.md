@@ -9,6 +9,9 @@ It connects the victims and rescuers at the same platform.
 It completely works with accurate location of users....
 
 
+[GitHub Repo for Fronend](https://github.com/allenjiji/ResQ/)
+[GitHub Repo for Backend](https://github.com/anandhakrishnanaji/RESQ-Backend/)
+
 
 ### Tech
 
@@ -31,7 +34,7 @@ $ flutter run
 
 For Back-end of the app.
 ```sh
-$ git clone https://github.com/anandhakrishnanaji/ResQ
+$ git clone https://github.com/anandhakrishnanaji/RESQ-Backend
 ```
 <!-- [![N|Solid](https://allenjiji.github.io/ResQ/download.png)](https://allenjiji.github.io/ResQ/ResQ.apk) -->
 
@@ -39,7 +42,7 @@ $ git clone https://github.com/anandhakrishnanaji/ResQ
 
 # Download Now!
 
-For Android : [Download v1.0 (18.7 mb)](https://allenjiji.github.io/ResQ/docs/ResQ.apk)
+For Android : [Download v1.0 (18.7 mb)](https://github.com/allenjiji/ResQ/releases/download/v1.0/ResQ.apk)
 
 
    [git-repo-url]: <https://github.com/joemccann/dillinger.git>
