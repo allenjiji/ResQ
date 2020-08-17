@@ -1,8 +1,8 @@
 # ResQ
-## A socialy responsible Flutter App
+## A socially responsible Flutter App
 
 
-ResQ is a socialy responsible Flutter Application which can work both on android and iOS.
+ResQ is a socially responsible Flutter Application which can work both on android and iOS.
 It is designed for assistance in scenarious of natural disasters like flood.
 The Emergency UI makes it easy to use.
 It connects the victims and rescuers at the same platform.
@@ -10,6 +10,10 @@ It completely works with accurate location of users....
 
 
 [GitHub Repo for Fronend](https://github.com/allenjiji/ResQ/)
+
+
+
+
 [GitHub Repo for Backend](https://github.com/anandhakrishnanaji/RESQ-Backend/)
 
 
@@ -17,6 +21,9 @@ It completely works with accurate location of users....
 
 
 [View Website for ResQ](https://allenjiji.github.io/ResQ/)
+
+
+
 ### Tech
 
 
