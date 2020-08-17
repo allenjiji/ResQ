@@ -6,7 +6,7 @@ ResQ is a socialy responsible Flutter Application which can work both on android
 It is designed for assistance in scenarious of natural disasters like flood.
 The Emergency UI makes it easy to use.
 It connects the victims and rescuers at the same platform.
-It completely works with accurate location of users.
+It completely works with accurate location of users....
 
 
 
