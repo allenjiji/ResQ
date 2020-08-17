@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
 
 import './weathermap.dart';
+import 'myprofile.dart';
 
 class More extends StatefulWidget {
   @override
@@ -147,12 +148,6 @@ class _MoreState extends State<More> {
                 textAlign: TextAlign.center,
               )));
             }
-            Navigator.of(context).pop();
-            Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-              "POST SENT....IT WILL APPEAR ON FEED PAGE SOON.",
-              textAlign: TextAlign.center,
-            )));
           },
           child: Text(
             "SUBMIT",
