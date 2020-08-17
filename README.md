@@ -1,136 +1,47 @@
 # ResQ
+## A socialy responsible Flutter App
 
-A Socialy Responsible Flutter project.
 
-## Under Development
+ResQ is a socialy responsible Flutter Application which can work both on android and iOS.
+It is designed for assistance in scenarious of natural disasters like flood.
+The Emergency UI makes it easy to use.
+It connects the victims and rescuers at the same platform.
+It completely works with accurate location of users.
 
-# Documentation Coming Soon...
 
-**API Documentation**
 
-**Show User**
-----
-  Returns json data about a particular user
+# Download Now!
 
-* **URL**
+For Android : [Download v1.0 (18.7 mb)](https://allenjiji.github.io/ResQ/docs/ResQ.apk)
 
-  resq/userprofile/:id
+### Tech
 
-* **Method:**
-  
-    `GET`
 
-*  **URL Params**
 
-   **Required:**
+* [Flutter] - For Front End Development
+* [Django Rest Framework] - For Backend Operations
+
+### Installation
+
+
+After installing Flutter on PC
+
+For front-end of the app.
+```sh
+$ git clone https://github.com/allenjiji/ResQ
+$ flutter pub get
+$ flutter run
+```
+
+For Back-end of the app.
+```sh
+$ git clone https://github.com/anandhakrishnanaji/ResQ
+```
+<!-- [![N|Solid](https://allenjiji.github.io/ResQ/download.png)](https://allenjiji.github.io/ResQ/ResQ.apk) -->
+
+
+
+   [git-repo-url]: <https://github.com/joemccann/dillinger.git>
+   [Django Rest Framework]: <https://www.django-rest-framework.org/>
+   [Flutter]: <https://flutter.dev/>
  
-   `id=[integer]`
-
-
-* **Success Response:**
-  
-  * **Code:** 200
-    **Content:** `{
-    "id": 1,
-    "last_login": null,
-    "is_superuser": false,
-    "phone": "7558097485",
-    "name": "monet",
-    "is_volunteer": true,
-    "district": "ernakulam",
-    "areaofvol": "medicine",
-    "address": "saranghi",
-    "lat": "73.254000",
-    "lon": "10.987000",
-    "groups": [],
-    "user_permissions": []
-}`
- 
-* **Error Response:**
-
-  * **Code:** 404 NOT FOUND 
-    **Content:** `{ detail : "Not found" }`
-
-**Show All Users**
-----
-  Returns json data about all users
-
-* **URL**
-
-  resq/userprofile/
-
-* **Method:**
-  
-    `GET`
-
-*  **Query Params**
-    **Optional:**
-* `lat=[decimal]`
-*  `lon=[decimal]`
-
-
-
-* **Success Response:**
-  
-  * **Code:** 200
-    **Content:** `[{
-    "id": 1,
-    "last_login": null,
-    "is_superuser": false,
-    "phone": "7558097485",
-    "name": "monet",
-    "is_volunteer": true,
-    "district": "ernakulam",
-    "areaofvol": "medicine",
-    "address": "saranghi",
-    "lat": "73.254000",
-    "lon": "10.987000",
-    "groups": [],
-    "user_permissions": []
-}]`
- 
-**Create a User**
-----
-  Creates a new user and returns json data about a particular user
-
-* **URL**
-
-  resq/userprofile/
-
-* **Method:**
-  
-    `POST`
-* **Data Params**
-
-  {phone,name,is_volunteer,lat,lon}
-  
-* **Success Response:**
-  
-  * **Code:** 200
-    **Content:** `{
-    "id": 1,
-    "last_login": null,
-    "is_superuser": false,
-    "phone": "7558097485",
-    "name": "monet",
-    "is_volunteer": true,
-    "district": "ernakulam",
-    "areaofvol": "medicine",
-    "address": "saranghi",
-    "lat": "73.254000",
-    "lon": "10.987000",
-    "groups": [],
-    "user_permissions": []
-}`
- 
-* **Error Response:**
-
-  * **Code:** 400 BAD REQUEST 
-    **Content:** `{
-    "non_field_errors": [
-        "Data not sufficient to be Volunteer"
-    ]
-}`
-
-
-
