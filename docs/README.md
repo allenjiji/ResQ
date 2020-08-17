@@ -37,7 +37,7 @@ For Back-end of the app.
 ```sh
 $ git clone https://github.com/anandhakrishnanaji/ResQ
 ```
-[![N|Solid](http://web.mit.edu/lipoff/www/sup/Android_Download_Button.png)](https://allenjiji.github.io/ResQ/ResQ.apk)
+[![N|Solid](https://allenjiji.github.io/ResQ/download.png)](https://allenjiji.github.io/ResQ/ResQ.apk)
 
 
    [git-repo-url]: <https://github.com/joemccann/dillinger.git>
