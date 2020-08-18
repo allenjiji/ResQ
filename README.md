@@ -31,10 +31,10 @@ It completely works with accurate location of users....
 * [Flutter] - For Front End Development
 * [Django Rest Framework] - For Backend Operations
 
-### Installation
+### Installation for Developers
 
 
-After installing Flutter on PC
+After installing Flutter on PC:
 
 For front-end of the app.
 ```sh
@@ -51,7 +51,7 @@ $ git clone https://github.com/anandhakrishnanaji/RESQ-Backend
 
 
 
-# Download Now!
+# Download APK Now!
 
 For Android : [Download v1.0 (18.7 mb)](https://github.com/allenjiji/ResQ/releases/download/v1.0/ResQ.apk)
 
