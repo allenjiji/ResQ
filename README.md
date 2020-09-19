@@ -52,9 +52,11 @@ $ git clone https://github.com/anandhakrishnanaji/RESQ-Backend
 ## Screenshots
 
 <p align="center">
-  <img src="./Screenshots/1.jpg" width="350" title="hover text">
-  <img src="your_relative_path_here_number_2_large_name" width="350" alt="accessibility text">
-</p>  f
+  <img src="./Screenshots/1.jpg" width="250" height="500" alt="Page 1">
+  <img src="./Screenshots/2.jpg" width="250" height="500" alt="Page 2">
+  <img src="./Screenshots/3.jpg" width="250" height="500" alt="Page 3">
+  <img src="./Screenshots/4.jpg" width="250" height="500" alt="Page 4">
+</p>  
 
 
 
