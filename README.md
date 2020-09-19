@@ -56,6 +56,10 @@ $ git clone https://github.com/anandhakrishnanaji/RESQ-Backend
   <img src="./Screenshots/2.jpg" width="250" height="500" alt="Page 2">
   <img src="./Screenshots/3.jpg" width="250" height="500" alt="Page 3">
   <img src="./Screenshots/4.jpg" width="250" height="500" alt="Page 4">
+  <img src="./Screenshots/5.jpg" width="250" height="500" alt="Page 5">
+  <img src="./Screenshots/6.jpg" width="250" height="500" alt="Page 6">
+  <img src="./Screenshots/7.jpg" width="250" height="500" alt="Page 7">
+  
 </p>  
 
 
