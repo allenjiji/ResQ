@@ -90,7 +90,7 @@ $ git clone https://github.com/anandhakrishnanaji/RESQ-Backend
 
 # Download APK Now!
 
-For Android : [Download v1.0 (18.7 mb)](https://github.com/allenjiji/ResQ/releases/download/v1.0/ResQ.apk)
+For Android : [Download v1.0 (19.0 mb)](https://github.com/allenjiji/ResQ/releases/download/v1.0/ResQ.apk)
 
 
    [git-repo-url]: <https://github.com/joemccann/dillinger.git>
