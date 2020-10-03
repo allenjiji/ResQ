@@ -15,19 +15,19 @@ class Feed extends StatefulWidget {
 }
 
 List<List<String>> dropdownItems = [
-  ["Rescue/രക്ഷാപ്രവർത്തനം", "rescue"],
-  ["Water/വെള്ളം", "water"],
-  ["Food/ഭക്ഷണം", "food"],
-  ["Clothing/വസ്ത്രം", "clothing"],
-  ["Medicine/മരുന്നുകള്‍", "medicine"],
-  ["Toiletries/ശുചീകരണ സാമഗ്രികള്‍", "toiletries"],
-  ["Service/സേവനം", "service"],
-  ["Other Needs/മറ്റു ആവശ്യങ്ങള്‍", "others"],
+  ["Rescue", "rescue"],
+  ["Water", "water"],
+  ["Food", "food"],
+  ["Clothing", "clothing"],
+  ["Medicine", "medicine"],
+  ["Toiletries", "toiletries"],
+  ["Service", "service"],
+  ["Other Needs", "others"],
 ];
 List<List<String>> dropdownItems2 = [
-  ["Request/അഭ്യർത്ഥന", "request"],
-  ["Announcement/അറിയിപ്പുകൾ", "announcement"],
-  ["Donate/ദാനം", "donate"],
+  ["Request", "request"],
+  ["Announcement", "announcement"],
+  ["Donate", "donate"],
 ];
 
 class _FeedState extends State<Feed> {
@@ -84,7 +84,7 @@ class _FeedState extends State<Feed> {
       TextFormField(
         keyboardType: TextInputType.text,
         decoration:
-            InputDecoration(hintText: "Place/സ്ഥലം", labelText: "Place/സ്ഥലം"),
+            InputDecoration(hintText: "Place", labelText: "Place"),
         onSaved: (newValue) => p.place = newValue,
         validator: (String value) {
           if (value.isEmpty) {
@@ -96,7 +96,7 @@ class _FeedState extends State<Feed> {
       TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            hintText: "District/ജില്ല", labelText: "District/ജില്ല"),
+            hintText: "District", labelText: "District"),
         onSaved: (newValue) => p.district = newValue,
         validator: (String value) {
           if (value.isEmpty) {
@@ -116,7 +116,7 @@ class _FeedState extends State<Feed> {
       TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            hintText: "Heading/തലക്കെട്ട്", labelText: "Heading/തലക്കെട്ട്"),
+            hintText: "Heading", labelText: "Heading"),
         onSaved: (newValue) => p.heading = newValue,
         validator: (String value) {
           if (value.isEmpty) {
@@ -130,7 +130,7 @@ class _FeedState extends State<Feed> {
         minLines: 1,
         maxLines: null,
         decoration: InputDecoration(
-            hintText: "Description/വിവരണം", labelText: "Description/വിവരണം"),
+            hintText: "Description", labelText: "Description"),
         onSaved: (newValue) => p.description = newValue,
         validator: (String value) {
           if (value.isEmpty) {
@@ -181,7 +181,7 @@ class _FeedState extends State<Feed> {
                   size: h / 20,
                 ),
                 title: Text(
-                  "Want to Post something important?\nപോസ്റ്റ് ചെയ്യുക",
+                  "Want to Post something important?",
                   style: TextStyle(color: Colors.red),
                 ),
                 trailing: Icon(Icons.arrow_forward_ios, color: Colors.red),

@@ -46,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: widget.phoneConroller,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Phone/ഫോൺ",
+          hintText: "Phone",
           errorText: showerror1 ? "Enter a valid Phone Number" : null,
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
@@ -57,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
       //style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password/പാസ്സ്‌വേർഡ്",
+          hintText: "Password",
           errorText: showerror3 ? "Enter minimum 8 characters" : null,
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
@@ -165,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: InputDecoration(
                         contentPadding:
                             EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                        hintText: "Name/പേര്",
+                        hintText: "Name",
                         errorText: showerror2 ? "Enter a valid Name" : null,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0))),

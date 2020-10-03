@@ -35,27 +35,27 @@ class GuidePage extends StatelessWidget {
               Padding(
                 child: Text('''    Disinfectant solution-അണുനാശിനി
 
-    Fever medication-പനി മരുന്നുകൾ
+    Fever medication
 
-    Antibiotics-ആൻറിബയോട്ടിക്
+    Antibiotics
 
-    anti fungal cream-ആന്റി-ഫംഗൽ ക്റീം
+    anti fungal cream
 
-    ORS Packets-ഒആർഎസ്സ് പാക്കറ്റുകൾ
+    ORS Packets
 
-    Pain Killers-പെയ്ൻ കില്ലറുകൾ
+    Pain Killers
 
-    antacids-ഗാസ്സിനുളള മരുന്നുകൾ
+    antacids
 
-    laxatives-വയറിളക്ക മരുന്നുകൾ
+    laxatives
 
-    Masks-മുഖംമൂടി
+    Masks
 
-    Cotton Rolls-പഞ്ഞി കെട്ടുകൾ
+    Cotton Rolls
 
-    Bleaching powder-ബ്ളീച്ചിങ് പൊടി
+    Bleaching powder
 
-    Chlorine tablets-ക്ലോറിൻ പൊടി''', style: TextStyle(fontSize: 18)),
+    Chlorine tablets''', style: TextStyle(fontSize: 18)),
                 padding: EdgeInsets.only(left: 50, right: 20, top: 20),
               ),
               Padding(

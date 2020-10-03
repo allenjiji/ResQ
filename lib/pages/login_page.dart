@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           errorText: showerror1 ? "Enter a valid Phone Number" : null,
-          hintText: "Phone/ഫോൺ",
+          hintText: "Phone",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       //style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password/പാസ്സ്‌വേർഡ്",
+          hintText: "Password",
           errorText: showerror2 ? "Enter a valid Password" : null,
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
