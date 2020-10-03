@@ -1,16 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:resq/common_file.dart';
 
 class Maps extends StatefulWidget {
+  Maps({this.position});
+  Position position;
   @override
   _MapsState createState() => _MapsState();
 }
 
 class _MapsState extends State<Maps> {
+  @override
+  initState() {
+    super.initState();
+  }
+
   Completer<GoogleMapController> _controller = Completer();
-  static const LatLng _center = const LatLng(4.521563, -122.677433);
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
     print("created map");
@@ -22,7 +30,7 @@ class _MapsState extends State<Maps> {
       child: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
-          target: _center,
+          target: LatLng(widget.position.latitude, widget.position.longitude),
           zoom: 11.0,
         ),
       ),

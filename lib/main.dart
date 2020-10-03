@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
         accentColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: GoogleFonts.cantarellTextTheme(
+        textTheme: GoogleFonts.nunitoTextTheme(
           Theme.of(context).textTheme,
         ),
         /* textTheme: TextTheme(

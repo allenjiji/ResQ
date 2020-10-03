@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import './feedpage.dart';
 import 'morepage.dart';
 import 'mapspage.dart';
@@ -11,6 +12,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Position position;
+  @override
+  void initState() {
+    getLocation();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -30,10 +38,10 @@ class _MyHomePageState extends State<MyHomePage> {
             //centerTitle: true,
             backgroundColor: Colors.white, elevation: 0,
           ),
-          body: TabBarView(children: [
+          body: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
             Feed(),
             More(),
-            Maps(),
+            Maps(position: position,),
             Contacts(),
           ]),
           bottomNavigationBar: Container(
@@ -58,5 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  void getLocation() async {
+    position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
 }

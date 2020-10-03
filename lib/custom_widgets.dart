@@ -119,14 +119,14 @@ class _FeedBoxState extends State<FeedBox> {
               ),
             ),
           ),
-          Container(
+          /*  Container(
             child: Image(
               image: NetworkImage(widget.p.image),
               fit: BoxFit.cover,
             ),
-          ),
+          ), */
           Container(
-              alignment: Alignment.centerLeft,
+              //alignment: Alignment.centerLeft,
               width: double.infinity,
               decoration: BoxDecoration(
                 border: Border(
@@ -138,14 +138,20 @@ class _FeedBoxState extends State<FeedBox> {
               padding: EdgeInsets.only(left: 10, top: 10),
               child: Column(
                 children: <Widget>[
-                  Text(
-                    widget.p.heading,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      widget.p.heading,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  Text(
-                    widget.p.description,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 15),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      widget.p.description,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15),
+                    ),
                   ),
                 ],
               )),

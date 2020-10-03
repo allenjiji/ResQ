@@ -11,7 +11,6 @@ import 'package:resq/pages/guidePage.dart';
 import 'package:resq/pages/myposts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
-
 import './weathermap.dart';
 import 'myprofile.dart';
 
@@ -29,6 +28,7 @@ class More extends StatefulWidget {
   String request;
 }
  */
+
 class _MoreState extends State<More> {
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
@@ -68,7 +68,6 @@ class _MoreState extends State<More> {
     final LoggedUser user = LoggedUser();
     Post p = new Post();
     final GlobalKey<FormState> formKey = GlobalKey();
-
     List<Widget> bottonSheetItemsRequests = [
       TextFormField(
         keyboardType: TextInputType.text,
