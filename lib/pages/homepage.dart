@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
           body: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
             Feed(),
             More(),
-            Maps(position: position,),
+            Maps(),
             Contacts(),
           ]),
           bottomNavigationBar: Container(

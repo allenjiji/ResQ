@@ -322,7 +322,7 @@ class _MoreState extends State<More> {
               Navigator.of(context).pop();
               Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text(
-                "You will appear as a Volunteer to others from now.",
+                "Volunteership Position Changed",
                 textAlign: TextAlign.center,
               )));
             }

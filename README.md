@@ -24,14 +24,14 @@ It is designed for assistance in scenarious of natural disasters like flood.
 ### Features
 
 - The Home Page contains the Posts by users.
-  - It may be posts by people trapped on different locations due to the disaster. (Diaplayed with RED margin).
-  - It may be posts by people willing to help offering help to the victims. (Diaplayed with GREEN margin).
-  - It may be announcements from officails or non-officials which are important for the users. (Diaplayed with BLACK margin).
-- The Post have a CONTACT button to it's bottom right which allowa the user to contact the person who posted the POST.
+  - It may be posts by people trapped on different locations due to the disaster. (Displayed with RED margin).
+  - It may be posts by people willing to help offering help to the victims. (Displayed with GREEN margin).
+  - It may be announcements from officails or non-officials which are important for the users. (Displayed with BLACK margin).
+- Every Post has a CONTACT button to it's bottom right which allows the user to contact the person who posted the POST.
   - It pops up 2 options:
     - Phone - It redirects the user to the dialpad with the phone number dialed.
     - Location - It redirects the user to the google maps with destination set to the location of  the person who posted it.
-- Every one who views the post have the ability to upvote the posts.This enables the rescuers to find out thr valid post and spam post.
+- Every one who views the post have the ability to upvote the posts.This enables the rescuers to find out the valid post and spam post.
 - User have the ability to delete the post posted anytime anywhere.
 - The weather map gives the live update of weather.
 - FAQ and GUIDE section for the do's and dont's during the disaster periods.
